@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager, ChromeType
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -13,7 +13,7 @@ import numpy as np
 from datetime import date, timedelta
 import openpyxl as xl
 
-service = Service(ChromeDriverManager().install())
+service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
 login = "jeremias_dief"
 #password = getpass.getpass(prompt='Digite a Senha: ', stream=None)
 password = "BetExplorer2023"
@@ -78,7 +78,7 @@ hoje_dia = hoje.day
 url_base = "https://www.betexplorer.com"
 url_nextmatches = f'https://www.betexplorer.com/next/soccer/?year={hoje_ano}&month={hoje_mes}&day={hoje_dia}'
 
-navegador = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver', options=options, service=service)
+navegador = webdriver.Chrome(options=options, service=service)
 navegador.implicitly_wait(60)
 
 navegador.get(url_nextmatches)
@@ -172,7 +172,7 @@ df_nextmatches = df_nextmatches[["País", "Campeonato", "Data", "Hora", "Home", 
                                  "Odd_Home", "Odd_Draw", "Odd_Away", 
                                  "Link"]]
 
-df_nextmatches.to_excel(f"C:/Users/jeremias.diefenthale/Desktop//Matches_{hoje}.xlsx",
+df_nextmatches.to_excel(f"Matches_{hoje}.xlsx",
                          sheet_name="Jogos",
                          columns=["País", "Campeonato", "Data", "Hora", "Home", "Away",
                                  "H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T",
