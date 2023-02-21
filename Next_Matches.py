@@ -85,12 +85,14 @@ navegador.implicitly_wait(60)
 
 navegador.get(url_nextmatches)
 
+sleep(2)
 cookies = navegador.find_element(By.XPATH, '//*[@id="onetrust-accept-btn-handler"]')
 if cookies:
     cookies.click()
 navegador.find_element(By.XPATH, '//*[@id="js-timezone"]').click()
 timezone = navegador.find_element(By.XPATH, '//*[@id="js-timezone"]/ul/li[22]/a').click()
 
+sleep(2)
 login_button = navegador.find_element(By.XPATH, '//*[@id="js-header"]/div[1]/div/div/ul/li[1]/a')
 login_button.click()
 login_button.find_element(By.XPATH, '//*[@id="login_nick"]').send_keys(login)
