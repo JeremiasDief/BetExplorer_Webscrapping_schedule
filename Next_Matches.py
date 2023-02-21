@@ -159,6 +159,11 @@ for tbody in tbodys:
             
             if len(infos_jogo) == 8:
                 jogos_do_dia.append(infos_jogo)
+
+for i, x in enumerate(jogos_do_dia):
+    if len(x) > 8:
+        #print(x, i)
+        x.remove("'")
                 
 
 df_nextmatches = pd.DataFrame(jogos_do_dia, columns=["Pais_e_Campeonato", "Hora", "Home", "Away", "Link",
