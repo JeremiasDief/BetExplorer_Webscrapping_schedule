@@ -3,7 +3,7 @@ name: run Next_Matches.py
 on: 
   #workflow_dispatch:
   schedule: 
-    - cron: '0 2 * * *'
+    - cron: '0 17 * * *'
 
 jobs:
   run_schedule:
@@ -50,6 +50,6 @@ jobs:
           git config user.name "Automated"
           git config user.email "actions@users.noreply.github.com"
           git add -A
-          timestamp=$(date -u)
+          timestamp=$(America/Sao_Paulo date -u)
           git commit -m "Latest data: ${timestamp}" || exit 0
           git push
