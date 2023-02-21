@@ -170,7 +170,6 @@ df_nextmatches.drop(columns=["Pais_e_Campeonato"], inplace=True)
 df_nextmatches["País"] = df_nextmatches["País"].str.upper()
 df_nextmatches["Campeonato"] = df_nextmatches["Campeonato"].str.upper()
 df_nextmatches["Data"] = date.today().strftime("%d/%m/%y")
-df_nextmatches[["Odd_Home", "Odd_Draw", "Odd_Away"]].replace(".", ",", inplace=True)
 df_nextmatches[["H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T"]] = np.nan
 df_nextmatches = df_nextmatches[["País", "Campeonato", "Data", "Hora", "Home", "Away",
                                  "H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T",
