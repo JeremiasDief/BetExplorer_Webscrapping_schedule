@@ -50,6 +50,6 @@ jobs:
           git config user.name "Automated"
           git config user.email "actions@users.noreply.github.com"
           git add -A
-          timestamp=$(date -u "-3 hours")
+          timestamp=$(date --date="3 hours ago")
           git commit -m "Latest data: ${timestamp}" || exit 0
           git push
