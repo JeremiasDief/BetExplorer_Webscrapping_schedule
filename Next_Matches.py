@@ -66,8 +66,10 @@ def get_odd_over(over: str, table, odds_dict: dict):
 
 
 options = Options()
-#options.add_argument('--headless')
+options.add_argument('--headless')
 options.add_argument('--no-sandbox')
+options.add_argument('--remote-debugging-port=9222')
+options.binary_location("/usr/bin/google-chrome")
 #options.add_argument('window-size=400,800')
 
 hoje = date.today()+timedelta(1)
@@ -78,7 +80,7 @@ hoje_dia = hoje.day
 url_base = "https://www.betexplorer.com"
 url_nextmatches = f'https://www.betexplorer.com/next/soccer/?year={hoje_ano}&month={hoje_mes}&day={hoje_dia}'
 
-navegador = webdriver.Chrome(options=options, service=service)
+navegador = webdriver.Chrome(options=options, service=service, executable_path="/usr/local/bin/chromedriver")
 navegador.implicitly_wait(60)
 
 navegador.get(url_nextmatches)
