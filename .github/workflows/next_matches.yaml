@@ -1,9 +1,9 @@
 name: run Next_Matches.py
 
 on: 
-  workflow_dispatch:
-  # schedule: 
-  #   - cron: '0 17 * * *'
+  # workflow_dispatch:
+  schedule: 
+    - cron: '0 5 * * *'
 
 jobs:
   run_schedule:
