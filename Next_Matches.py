@@ -72,7 +72,7 @@ options.add_argument('--remote-debugging-port=9222')
 options.binary_location = '/usr/bin/google-chrome'
 #options.add_argument('window-size=400,800')
 
-hoje = date.today()#-timedelta(1)
+hoje = date.today()+timedelta(1)
 hoje_ano = hoje.year
 hoje_mes = hoje.month
 hoje_dia = hoje.day
@@ -181,9 +181,9 @@ df_nextmatches = df_nextmatches[["País", "Campeonato", "Data", "Hora", "Home", 
                                  "Odd_Home", "Odd_Draw", "Odd_Away", 
                                  "Link"]]
 
-df_nextmatches.to_excel(f"Matches_{hoje}.xlsx",
+df_nextmatches.to_excel(f"./Next_Matches/Matches_{hoje}.xlsx",
                          sheet_name="Jogos",
                          columns=["País", "Campeonato", "Data", "Hora", "Home", "Away",
                                  "H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T",
-                                 "Odd_Home", "Odd_Draw", "Odd_Away"],
+                                 "Odd_Home", "Odd_Draw", "Odd_Away", "Link"],
                          header=False, index=False)
