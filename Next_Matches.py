@@ -81,6 +81,7 @@ url_base = "https://www.betexplorer.com"
 url_nextmatches = f'https://www.betexplorer.com/next/soccer/?year={hoje_ano}&month={hoje_mes}&day={hoje_dia}'
 
 navegador = webdriver.Chrome(options=options, service=service, executable_path="/usr/local/bin/chromedriver")
+#navegador = webdriver.Chrome(options=options, service=service)
 navegador.implicitly_wait(60)
 
 navegador.get(url_nextmatches)
