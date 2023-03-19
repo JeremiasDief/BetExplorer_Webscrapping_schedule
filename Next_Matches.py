@@ -139,7 +139,7 @@ for tbody in tbodys:
                     infos_jogo.append(td.a.text)
             elif td["class"] == ["table-main__result"]:
                 #print(td.get_text())
-                if td.get_text()[0] in [str(x) for x in list(range(10))]:
+                if td.get_text()[0] in [str(x) for x in list(range(20))]:
                     if "data-live-cell" not in td.attrs:
                         options = Options()
                         options.add_argument('--headless')
@@ -147,14 +147,20 @@ for tbody in tbodys:
                         naveg_game = webdriver.Chrome(options=options, service=service)
                         naveg_game.implicitly_wait(60)
                         naveg_game.get(url_jogo)
-                        sleep(2)
+                        sleep(0.5)
                         game_page_source = naveg_game.page_source
                         site_game = BeautifulSoup(game_page_source)
                         average = site_game.find('tfoot', attrs={'id': 'match-add-to-selection'})
-                        td_odds = average.find_all("td", attrs={"class": "table-main__detail-odds"})
+                        if average == None:
+                            td_odds = [None, None, None]
+                            for odd in td_odds:
+                                infos_jogo.append(odd)
+                        else:
+                            td_odds = average.find_all("td", attrs={"class": "table-main__detail-odds"})
+                            for odd in td_odds:
+                                infos_jogo.append(odd.text)
                         naveg_game.close()
-                        for odd in td_odds:
-                            infos_jogo.append(odd.text)
+                        
             else:
                 continue
             
