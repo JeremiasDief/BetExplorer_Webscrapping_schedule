@@ -13,7 +13,8 @@ import numpy as np
 from datetime import date, timedelta
 import openpyxl as xl
 
-service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+#service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+service = Service(ChromeDriverManager().install())
 login = "jeremias_dief"
 #password = getpass.getpass(prompt='Digite a Senha: ', stream=None)
 password = "BetExplorer2023"
