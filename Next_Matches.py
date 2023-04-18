@@ -182,7 +182,12 @@ df_nextmatches[["País", "Campeonato"]] = df_nextmatches["Pais_e_Campeonato"].st
 df_nextmatches.drop(columns=["Pais_e_Campeonato"], inplace=True)
 df_nextmatches["País"] = df_nextmatches["País"].str.upper()
 df_nextmatches["Campeonato"] = df_nextmatches["Campeonato"].str.upper()
-df_nextmatches["Data"] = date.today().strftime("%d/%m/%y")
+df_nextmatches["Home"] = df_nextmatches["Home"].str.replace("-", " ")
+df_nextmatches["Away"] = df_nextmatches["Away"].str.replace("-", " ")
+df_nextmatches["Odd_Home"] = df_nextmatches["Odd_Home"].str.replace(".", ",")
+df_nextmatches["Odd_Draw"] = df_nextmatches["Odd_Draw"].str.replace(".", ",")
+df_nextmatches["Odd_Away"] = df_nextmatches["Odd_Away"].str.replace(".", ",")
+df_nextmatches["Data"] = date.today()
 df_nextmatches[["H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T"]] = np.nan
 df_nextmatches = df_nextmatches[["País", "Campeonato", "Data", "Hora", "Home", "Away",
                                  "H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T",
