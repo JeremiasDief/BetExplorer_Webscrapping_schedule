@@ -11,7 +11,9 @@ import keyring
 import pandas as pd
 import numpy as np
 from datetime import date, timedelta
-import openpyxl as xl
+from openpyxl import Workbook
+from openpyxl.utils.dataframe import dataframe_to_rows
+from openpyxl.styles import Font, Alignment
 
 #service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
 service = Service(ChromeDriverManager().install())
@@ -194,9 +196,19 @@ df_nextmatches = df_nextmatches[["País", "Campeonato", "Data", "Hora", "Home", 
                                  "Odd_Home", "Odd_Draw", "Odd_Away", 
                                  "Link"]]
 
-df_nextmatches.to_excel(f"./Next_Matches/Matches_{hoje}.xlsx",
-                         sheet_name="Jogos",
-                         columns=["País", "Campeonato", "Data", "Hora", "Home", "Away",
-                                 "H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T",
-                                 "Odd_Home", "Odd_Draw", "Odd_Away", "Link"],
-                         header=False, index=False)
+# df_nextmatches.to_excel(f"./Next_Matches/Matches_{hoje}.xlsx",
+#                          sheet_name="Jogos",
+#                          columns=["País", "Campeonato", "Data", "Hora", "Home", "Away",
+#                                  "H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T",
+#                                  "Odd_Home", "Odd_Draw", "Odd_Away", "Link"],
+#                          header=False, index=False)
+
+wb = Workbook()
+ws = wb.active
+
+ws.number_format = '#,##0.00'
+
+for row in dataframe_to_rows(df_nextmatches, index=False, header=False):
+    ws.append(row)
+
+wb.save(f"./Next_Matches/Matches_{hoje}.xlsx")
