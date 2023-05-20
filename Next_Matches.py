@@ -75,7 +75,7 @@ options.add_argument('--remote-debugging-port=9222')
 #options.binary_location = '/usr/bin/google-chrome'
 #options.add_argument('window-size=400,800')
 
-hoje = date.today()-timedelta(1)
+hoje = date.today()#-timedelta(1)
 hoje_ano = hoje.year
 hoje_mes = hoje.month
 hoje_dia = hoje.day
