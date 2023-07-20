@@ -16,7 +16,9 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import Font, Alignment
 
 #service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
-service = Service(ChromeDriverManager().install())
+#service = Service(ChromeDriverManager().install())
+CHROME_VERSION = '115.0.5790'
+CHROMEDRIVER_URL = f'https://chromedriver.storage.googleapis.com/{CHROME_VERSION}/chromedriver_linux64.zip'
 login = "jeremias_dief"
 #password = getpass.getpass(prompt='Digite a Senha: ', stream=None)
 password = "BetExplorer2023"
@@ -68,12 +70,19 @@ def get_odd_over(over: str, table, odds_dict: dict):
             odds_dict[f"Over_{over.replace('.', '')}"] = "Sem casas disponíveis"
 
 
-options = Options()
+# options = Options()
+# options.add_argument('--headless')
+# options.add_argument('--no-sandbox')
+# options.add_argument('--remote-debugging-port=9222')
+#options.binary_location = '/usr/bin/google-chrome'
+#options.add_argument('window-size=400,800')
+
+# Use o Chromedriver manualmente
+driver_path = './chromedriver'  # Defina o caminho onde o arquivo chromedriver está localizado
+options = webdriver.ChromeOptions()
 options.add_argument('--headless')
 options.add_argument('--no-sandbox')
 options.add_argument('--remote-debugging-port=9222')
-#options.binary_location = '/usr/bin/google-chrome'
-#options.add_argument('window-size=400,800')
 
 hoje = date.today()#-timedelta(1)
 hoje_ano = hoje.year
@@ -84,7 +93,8 @@ url_base = "https://www.betexplorer.com"
 url_nextmatches = f'https://www.betexplorer.com/next/football/?year={hoje_ano}&month={hoje_mes}&day={hoje_dia}'
 
 #navegador = webdriver.Chrome(options=options, service=service, executable_path="/usr/local/bin/chromedriver")
-navegador = webdriver.Chrome(options=options, service=service)
+#navegador = webdriver.Chrome(options=options, service=service)
+navegador = webdriver.Chrome(executable_path=driver_path, options=options)
 navegador.implicitly_wait(60)
 
 navegador.get(url_nextmatches)
@@ -147,7 +157,7 @@ for tbody in tbodys:
                         options = Options()
                         options.add_argument('--headless')
                         url_jogo = url_base + link_jogo
-                        naveg_game = webdriver.Chrome(options=options, service=service)
+                        naveg_game = webdriver.Chrome(executable_path=driver_path, options=options)
                         naveg_game.implicitly_wait(60)
                         naveg_game.get(url_jogo)
                         sleep(0.5)
