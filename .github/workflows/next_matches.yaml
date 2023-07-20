@@ -29,8 +29,11 @@ jobs:
           sudo apt-get -qqy install google-chrome-stable
           google-chrome-stable --version
           CHROME_VERSION=$(google-chrome-stable --version)
+          echo "CHROME_VERSION: ${CHROME_VERSION}"  # Exibe a versão do Google Chrome
           CHROME_MAJOR_VERSION=$(echo "${CHROME_VERSION}" | sed -E -n 's/.*([0-9]+)\..*/\1/p')
+          echo "CHROME_MAJOR_VERSION: ${CHROME_MAJOR_VERSION}"  # Exibe a versão principal do Google Chrome
           export CHROMEDRIVER_VERSION=$(curl -sL "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION}")
+          echo "CHROMEDRIVER_VERSION: ${CHROMEDRIVER_VERSION}"  # Exibe a versão do Chromedriver
           curl -L -O "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
           unzip chromedriver_linux64.zip && chmod +x chromedriver && sudo mv chromedriver /usr/local/bin
           chromedriver -version
