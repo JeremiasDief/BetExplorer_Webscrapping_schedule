@@ -32,8 +32,10 @@ jobs:
           echo "CHROME_VERSION: ${CHROME_VERSION}"  # Exibe a versão do Google Chrome
           CHROME_MAJOR_VERSION=$(echo "${CHROME_VERSION}" | cut -d " " -f 3 | cut -d "." -f 1)
           echo "CHROME_MAJOR_VERSION: ${CHROME_MAJOR_VERSION}"  # Exibe a versão principal do Google Chrome
-          export CHROMEDRIVER_VERSION=$(curl -sL "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION}")
-          echo "CHROMEDRIVER_VERSION: ${CHROMEDRIVER_VERSION}"  # Exibe a versão do Chromedriver
+
+          # Defina manualmente a versão do Chromedriver desejada
+          CHROMEDRIVER_VERSION="94.0.4606.41"
+
           curl -L -O "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
           unzip chromedriver_linux64.zip && chmod +x chromedriver && sudo mv chromedriver /usr/local/bin
           chromedriver -version
