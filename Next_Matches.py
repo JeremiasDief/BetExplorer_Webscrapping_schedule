@@ -17,7 +17,7 @@ from openpyxl.styles import Font, Alignment
 
 #service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
 #service = Service(ChromeDriverManager().install())
-CHROME_VERSION = '115.0.5790'
+CHROME_VERSION = '114.0.5735'
 CHROMEDRIVER_URL = f'https://chromedriver.storage.googleapis.com/{CHROME_VERSION}/chromedriver_linux64.zip'
 login = "jeremias_dief"
 #password = getpass.getpass(prompt='Digite a Senha: ', stream=None)
@@ -78,7 +78,7 @@ def get_odd_over(over: str, table, odds_dict: dict):
 #options.add_argument('window-size=400,800')
 
 # Use o Chromedriver manualmente
-driver_path = './chromedriver'  # Defina o caminho onde o arquivo chromedriver está localizado
+#driver_path = './chromedriver'  # Defina o caminho onde o arquivo chromedriver está localizado
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')
 options.add_argument('--no-sandbox')
@@ -94,7 +94,7 @@ url_nextmatches = f'https://www.betexplorer.com/next/football/?year={hoje_ano}&m
 
 #navegador = webdriver.Chrome(options=options, service=service, executable_path="/usr/local/bin/chromedriver")
 #navegador = webdriver.Chrome(options=options, service=service)
-navegador = webdriver.Chrome(executable_path=driver_path, options=options)
+navegador = webdriver.Chrome(options=options)
 navegador.implicitly_wait(60)
 
 navegador.get(url_nextmatches)
@@ -157,7 +157,7 @@ for tbody in tbodys:
                         options = Options()
                         options.add_argument('--headless')
                         url_jogo = url_base + link_jogo
-                        naveg_game = webdriver.Chrome(executable_path=driver_path, options=options)
+                        naveg_game = webdriver.Chrome(options=options)
                         naveg_game.implicitly_wait(60)
                         naveg_game.get(url_jogo)
                         sleep(0.5)
