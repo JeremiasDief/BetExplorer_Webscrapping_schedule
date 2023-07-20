@@ -27,6 +27,7 @@ jobs:
           echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
           sudo apt-get update -qqy
           sudo apt-get -qqy install google-chrome-stable
+          google-chrome-stable --version
           CHROME_VERSION=$(google-chrome-stable --version)
           CHROME_MAJOR_VERSION=$(echo "${CHROME_VERSION}" | sed -E -n 's/.*([0-9]+)\..*/\1/p')
           export CHROMEDRIVER_VERSION=$(curl -sL "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION}")
