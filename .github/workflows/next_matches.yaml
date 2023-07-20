@@ -30,7 +30,7 @@ jobs:
           google-chrome-stable --version
           CHROME_VERSION=$(google-chrome-stable --version)
           echo "CHROME_VERSION: ${CHROME_VERSION}"  # Exibe a versão do Google Chrome
-          CHROME_MAJOR_VERSION=$(echo "${CHROME_VERSION}" | sed -E -n 's/.*([0-9]+)\..*/\1/p')
+          CHROME_MAJOR_VERSION=$(echo "${CHROME_VERSION}" | cut -d " " -f 3 | cut -d "." -f 1)
           echo "CHROME_MAJOR_VERSION: ${CHROME_MAJOR_VERSION}"  # Exibe a versão principal do Google Chrome
           export CHROMEDRIVER_VERSION=$(curl -sL "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_MAJOR_VERSION}")
           echo "CHROMEDRIVER_VERSION: ${CHROMEDRIVER_VERSION}"  # Exibe a versão do Chromedriver
