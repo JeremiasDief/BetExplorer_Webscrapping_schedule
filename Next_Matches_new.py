@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -17,9 +18,15 @@ password = "BetExplorer2023"
 # Iniciar medição de tempo
 start_time = time.time()
 
+# Configurar opções do Chrome para rodar em modo headless
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+
 # Configurar o WebDriver usando webdriver-manager
 service = Service(ChromeDriverManager(version="114.0.5735.90").install())
-driver = webdriver.Chrome(service=service)
+driver = webdriver.Chrome(service=service, options=chrome_options)
 
 # Lista para armazenar os dados
 data = []
