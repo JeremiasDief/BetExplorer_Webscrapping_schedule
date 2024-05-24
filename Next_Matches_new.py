@@ -12,6 +12,9 @@ import pandas as pd
 import numpy as np
 import subprocess
 
+CHROME_VERSION = '114.0.5735'
+CHROMEDRIVER_URL = f'https://chromedriver.storage.googleapis.com/{CHROME_VERSION}/chromedriver_linux64.zip'
+
 # Credenciais
 login = "jeremias_dief"
 password = "BetExplorer2023"
@@ -19,22 +22,28 @@ password = "BetExplorer2023"
 # Iniciar medição de tempo
 start_time = time.time()
 
-# Configurar opções do Chrome para rodar em modo headless
-chrome_options = Options()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--disable-dev-shm-usage")
+# Use o Chromedriver manualmente
+#driver_path = './chromedriver'  # Defina o caminho onde o arquivo chromedriver está localizado
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--remote-debugging-port=9222')
 
 # Configurar o WebDriver usando webdriver-manager
-service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service, options=chrome_options)
+# service = Service(ChromeDriverManager().install())
+driver = webdriver.Chrome(options=options)
+
+hoje = date.today()#-timedelta(1)
+hoje_ano = hoje.year
+hoje_mes = hoje.month
+hoje_dia = hoje.day
 
 # Lista para armazenar os dados
 data = []
 
 try:
     # Acessar a página inicial
-    driver.get("https://www.betexplorer.com/?year=2024&month=5&day=24")
+    driver.get(f"https://www.betexplorer.com/?year={hoje_ano}&month={hoje_mes}&day={hoje_dia}")
 
     # Aceitar cookies se a mensagem aparecer
     try:
