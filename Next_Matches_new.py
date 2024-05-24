@@ -10,6 +10,7 @@ import time
 from datetime import date, timedelta
 import pandas as pd
 import numpy as np
+import subprocess
 
 # Credenciais
 login = "jeremias_dief"
@@ -18,6 +19,10 @@ password = "BetExplorer2023"
 # Iniciar medição de tempo
 start_time = time.time()
 
+# Obter a versão do Google Chrome instalada
+chrome_version = subprocess.run(['google-chrome', '--version'], capture_output=True, text=True)
+chrome_version = chrome_version.stdout.split(' ')[2].split('.')[0]
+
 # Configurar opções do Chrome para rodar em modo headless
 chrome_options = Options()
 chrome_options.add_argument("--headless")
@@ -25,7 +30,7 @@ chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 
 # Configurar o WebDriver usando webdriver-manager
-service = Service(ChromeDriverManager().install())
+service = Service(ChromeDriverManager(version=chrome_version).install())
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
 # Lista para armazenar os dados
