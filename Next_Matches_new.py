@@ -32,6 +32,7 @@ options.add_argument('--remote-debugging-port=9222')
 # Configurar o WebDriver usando webdriver-manager
 # service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(options=options)
+driver.implicitly_wait(60)
 
 hoje = date.today()#-timedelta(1)
 hoje_ano = hoje.year
@@ -44,6 +45,7 @@ data = []
 try:
     # Acessar a página inicial
     driver.get("https://www.betexplorer.com/?year=2024&month=5&day=24")
+    time.sleep(2)
 
     # Aceitar cookies se a mensagem aparecer
     try:
