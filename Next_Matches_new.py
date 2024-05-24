@@ -88,7 +88,7 @@ try:
     login_submit.click()
 
     # Adicionar um tempo de espera após o login
-    time.sleep(5)  # Esperar 5 segundos após o login
+    time.sleep(20)  # Esperar 5 segundos após o login
 
     # Verificar se o login foi bem-sucedido e a página está completamente carregada
     WebDriverWait(driver, 30).until(
@@ -111,7 +111,7 @@ try:
     next_matches_table = site.find('div', attrs={'id': 'nr-ko-all'})
     if next_matches_table:
         print("next_matches_table ok!")
-        print(next_matches_table)
+        # print(next_matches_table)
     else:
         print("next_matches_table não puxou")
 
