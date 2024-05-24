@@ -101,6 +101,7 @@ try:
 
     # Criar o objeto BeautifulSoup
     site = BeautifulSoup(page_source, 'html.parser')
+    print(site)
 
     # Encontrar o novo elemento 'nr-ko-all'
     next_matches_table = site.find('div', attrs={'id': 'nr-ko-all'})
@@ -212,10 +213,11 @@ finally:
     # Fechar o navegador
     driver.quit()
 
-    # Medir o tempo total de execução
-    end_time = time.time()
-    total_time = end_time - start_time
-    print(f"Tempo total de execução: {total_time:.2f} segundos")
+    # Verifique se há dados coletados
+    if len(data) == 0:
+        print("Nenhum dado foi coletado.")
+    else:
+        print(f"Tem dados: \n{data}")
 
     # Criar um DataFrame com os dados e salvar em um arquivo Excel
     df_nextmatches = pd.DataFrame(data, columns=[
@@ -248,3 +250,8 @@ finally:
                                  "Odd Home", "Odd Draw", "Odd Away", "Over 2.5", "Under 2.5",
                                  "BTTS Sim", "BTTS Não", "Link"],
                             header=False, index=False)
+    
+    # Medir o tempo total de execução
+    end_time = time.time()
+    total_time = end_time - start_time
+    print(f"Tempo total de execução: {total_time:.2f} segundos")
