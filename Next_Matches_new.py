@@ -18,7 +18,7 @@ password = "BetExplorer2023"
 start_time = time.time()
 
 # Configurar o WebDriver usando webdriver-manager
-service = Service(ChromeDriverManager().install())
+service = Service(ChromeDriverManager(version="114.0.5735.90").install())
 driver = webdriver.Chrome(service=service)
 
 # Lista para armazenar os dados
@@ -127,7 +127,7 @@ try:
                 ou_25_element.click()
                 
                 # Adicionar um tempo de espera para garantir que a ação seja concluída
-                time.sleep(1)
+                time.sleep(2)
 
                 # Obter o código-fonte da página após o login
                 page_source_match = driver.page_source
@@ -151,7 +151,7 @@ try:
                 btts_element.click()
                 
                 # Adicionar um tempo de espera para garantir que a ação seja concluída
-                time.sleep(1)
+                time.sleep(2)
 
                 # Obter o código-fonte da página após o login
                 page_source_match = driver.page_source
