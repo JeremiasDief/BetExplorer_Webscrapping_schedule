@@ -52,7 +52,7 @@ try:
     # Aceitar cookies se a mensagem aparecer
     try:
         accept_cookies_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//button[text()='Aceito']"))
+            EC.element_to_be_clickable((By.XPATH, '//*[@id="onetrust-accept-btn-handler"]'))
         )
         accept_cookies_button.click()
     except:
