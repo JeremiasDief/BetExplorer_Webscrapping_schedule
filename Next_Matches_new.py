@@ -111,9 +111,7 @@ try:
     next_matches_table = site.find('div', attrs={'id': 'nr-ko-all'})
     if next_matches_table:
         print("next_matches_table ok!")
-        # Salvar a variável em um arquivo txt
-        with open("./Next_Matches/next_matches_table.txt", 'w', encoding='utf-8') as file:
-            file.write(str(next_matches_table))
+        print(next_matches_table)
     else:
         print("next_matches_table não puxou")
 
