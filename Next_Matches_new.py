@@ -25,7 +25,7 @@ chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 
 # Configurar o WebDriver usando webdriver-manager
-service = Service(ChromeDriverManager(version="114.0.5735.90").install())
+service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
 # Lista para armazenar os dados
