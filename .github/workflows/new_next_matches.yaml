@@ -21,26 +21,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Instalar Google Chrome e Chromedriver
-      run: |
-        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-        echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
-        sudo apt-get update -qqy
-        sudo apt-get -qqy install google-chrome-stable
-        google-chrome-stable --version
-        CHROME_VERSION=$(google-chrome-stable --version)
-        echo "CHROME_VERSION: ${CHROME_VERSION}"  # Exibe a versão do Google Chrome
-        CHROME_MAJOR_VERSION=$(echo "${CHROME_VERSION}" | cut -d " " -f 3 | cut -d "." -f 1)
-        echo "CHROME_MAJOR_VERSION: ${CHROME_MAJOR_VERSION}"  # Exibe a versão principal do Google Chrome
-
-        # Defina manualmente a versão do Chromedriver desejada
-        CHROMEDRIVER_VERSION="94.0.4606.41"
-
-        curl -L -O "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip"
-        unzip chromedriver_linux64.zip && chmod +x chromedriver && sudo mv chromedriver /usr/local/bin
-        chromedriver -version
-        which chromedriver
-        which google-chrome
+    - name: Remove Chrome
+      run: sudo apt purge google-chrome-stable
+    - name: Remove default Chromium
+      run: sudo apt purge chromium-browser
+    - name: Install a new Chromium
+      run: sudo apt install -y chromium-browser
 
     - name: Run the webscraping script
       run: |

@@ -4,16 +4,12 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager, ChromeType
 from bs4 import BeautifulSoup
 import time
 from datetime import date, timedelta
 import pandas as pd
 import numpy as np
-import subprocess
-
-CHROME_VERSION = '114.0.5735'
-CHROMEDRIVER_URL = f'https://chromedriver.storage.googleapis.com/{CHROME_VERSION}/chromedriver_linux64.zip'
 
 # Credenciais
 login = "jeremias_dief"
@@ -22,17 +18,23 @@ password = "BetExplorer2023"
 # Iniciar medição de tempo
 start_time = time.time()
 
-# Use o Chromedriver manualmente
-#driver_path = './chromedriver'  # Defina o caminho onde o arquivo chromedriver está localizado
-options = webdriver.ChromeOptions()
-options.add_argument('--headless')
-options.add_argument('--no-sandbox')
-options.add_argument('--remote-debugging-port=9222')
+# Options
+options = Options()
+chrome_options = [
+    "--headless",
+    "--disable-gpu",
+    "--window-size=1920,1200",
+    "--ignore-certificate-errors",
+    "--disable-extensions",
+    "--no-sandbox",
+    "--disable-dev-shm-usage"
+]
+for option in chrome_options:
+    options.add_argument(option)
 
 # Configurar o WebDriver usando webdriver-manager
-# service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(options=options)
-driver.implicitly_wait(60)
+service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+driver = webdriver.Chrome(service=service, options=options)
 
 hoje = date.today()#-timedelta(1)
 hoje_ano = hoje.year
@@ -44,7 +46,7 @@ data = []
 
 try:
     # Acessar a página inicial
-    driver.get("https://www.betexplorer.com/?year=2024&month=5&day=24")
+    driver.get("https://www.betexplorer.com/?year=2025&month=5&day=24")
     time.sleep(2)
 
     # Aceitar cookies se a mensagem aparecer
@@ -203,7 +205,7 @@ try:
                     match_link
                 ])
 
-        if country == "Brazil":
+        if country == "Argentina":
             break
 
 finally:
