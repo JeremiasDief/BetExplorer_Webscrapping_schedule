@@ -43,7 +43,7 @@ data = []
 
 try:
     # Acessar a página inicial
-    driver.get(f"https://www.betexplorer.com/?year={hoje_ano}&month={hoje_mes}&day={hoje_dia}")
+    driver.get("https://www.betexplorer.com/?year=2024&month=5&day=24")
 
     # Aceitar cookies se a mensagem aparecer
     try:
