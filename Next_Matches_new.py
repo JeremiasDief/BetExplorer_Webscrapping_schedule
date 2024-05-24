@@ -101,13 +101,24 @@ try:
 
     # Criar o objeto BeautifulSoup
     site = BeautifulSoup(page_source, 'html.parser')
-    print(site)
+    if site:
+        print("site ok!")
+    else:
+        print("site não puxou")
 
     # Encontrar o novo elemento 'nr-ko-all'
     next_matches_table = site.find('div', attrs={'id': 'nr-ko-all'})
+    if next_matches_table:
+        print("next_matches_table ok!")
+    else:
+        print("next_matches_table não puxou")
 
     # Encontrar todas as ligas favoritas e seus jogos
     leagues = next_matches_table.find_all('ul', class_='leagues-list topleague')
+    if leagues:
+        print("leagues ok!")
+    else:
+        print("leagues não puxou")
     for league in leagues:
         favourite_star = league.find('a', class_='myleague active table-main__FavouriteStar')
         if favourite_star:
