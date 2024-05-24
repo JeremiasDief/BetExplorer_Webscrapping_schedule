@@ -19,10 +19,6 @@ password = "BetExplorer2023"
 # Iniciar medição de tempo
 start_time = time.time()
 
-# Obter a versão principal do Google Chrome instalada
-chrome_version = subprocess.run(['google-chrome', '--version'], capture_output=True, text=True)
-chrome_version = chrome_version.stdout.split(' ')[2].split('.')[0]
-
 # Configurar opções do Chrome para rodar em modo headless
 chrome_options = Options()
 chrome_options.add_argument("--headless")
@@ -30,7 +26,7 @@ chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 
 # Configurar o WebDriver usando webdriver-manager
-service = Service(ChromeDriverManager(version=f"{chrome_version}.0.0.0").install())
+service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
 # Lista para armazenar os dados
