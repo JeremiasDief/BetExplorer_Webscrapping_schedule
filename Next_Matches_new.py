@@ -22,7 +22,8 @@ start_time = time.time()
 # Options
 options = Options()
 chrome_options = [
-    "--headless",
+    # Remova o modo headless para testes
+    # "--headless",
     "--disable-gpu",
     "--window-size=1920,1200",
     "--ignore-certificate-errors",
@@ -47,7 +48,7 @@ data = []
 
 try:
     # Acessar a página inicial
-    driver.get("https://www.betexplorer.com/?year=2025&month=5&day=27")
+    driver.get("https://www.betexplorer.com/?year=2025&month=5&day=24")
     time.sleep(5)
 
     # Aceitar cookies se a mensagem aparecer
@@ -111,7 +112,7 @@ try:
     next_matches_table = site.find('div', attrs={'id': 'nr-ko-all'})
     if next_matches_table:
         print("next_matches_table ok!")
-        print(next_matches_table)
+        print(next_matches_table.prettify())  # Imprimir o conteúdo completo para depuração
     else:
         print("next_matches_table não puxou")
 
