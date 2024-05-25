@@ -148,6 +148,14 @@ try:
                 else:
                     match_hour = match.find('span', class_='table-main__matchStatus matchDateStatus').get_text(strip=True)
                     status = False
+                    if match_hour not in ("POSTP.", "CAN."):
+                        data_dt = match['data-dt']
+                        day, month, year, hour, minute = map(int, data_dt.split(','))
+                        match_time = datetime(year, month, day, hour, minute)
+                        new_match_time = match_time - timedelta(hours=5)
+                        formatted_time = new_match_time.strftime('%H:%M')
+                        match_hour = formatted_time
+
                 home_team = match.find('div', class_='participantsHomeAwayMobileWidth table-main__participantHome participantHomeOrder').find('p').get_text(strip=True)
                 away_team = match.find('div', class_='participantsHomeAwayMobileWidth table-main__participantAway').find('p').get_text(strip=True)
 
