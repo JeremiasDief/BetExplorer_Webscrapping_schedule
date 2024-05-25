@@ -47,36 +47,36 @@ data = []
 
 try:
     # Acessar a página inicial
-    driver.get("https://www.betexplorer.com/?year=2025&month=5&day=24")
-    time.sleep(2)
+    driver.get("https://www.betexplorer.com/?year=2025&month=5&day=27")
+    time.sleep(5)
 
     # Aceitar cookies se a mensagem aparecer
     try:
-        accept_cookies_button = WebDriverWait(driver, 10).until(
+        accept_cookies_button = WebDriverWait(driver, 20).until(
             EC.element_to_be_clickable((By.XPATH, '//*[@id="onetrust-accept-btn-handler"]'))
         )
         accept_cookies_button.click()
-    except:
-        print("Não foi encontrado o botão de aceitar cookies")
+    except Exception as e:
+        print(f"Erro ao aceitar cookies: {e}")
         pass
 
     # Ajustar o timezone
-    WebDriverWait(driver, 20).until(
+    WebDriverWait(driver, 30).until(
         EC.element_to_be_clickable((By.XPATH, '//*[@id="js-timezone"]'))
     ).click()
     
-    WebDriverWait(driver, 20).until(
+    WebDriverWait(driver, 30).until(
         EC.element_to_be_clickable((By.XPATH, '//*[@id="js-timezone"]/ul/li[21]/button'))
     ).click()
 
     # Clicar no botão de login
-    login_button = WebDriverWait(driver, 20).until(
+    login_button = WebDriverWait(driver, 30).until(
         EC.element_to_be_clickable((By.XPATH, '//*[@id="js-header"]/div[1]/div/div/ul/li[1]/a'))
     )
     login_button.click()
 
     # Preencher o formulário de login
-    username_field = WebDriverWait(driver, 10).until(
+    username_field = WebDriverWait(driver, 20).until(
         EC.presence_of_element_located((By.XPATH, '//*[@id="login_nick"]'))
     )
     password_field = driver.find_element(By.XPATH, '//*[@id="login_pass"]')
@@ -88,10 +88,10 @@ try:
     login_submit.click()
 
     # Adicionar um tempo de espera após o login
-    time.sleep(20)  # Esperar 5 segundos após o login
+    time.sleep(15)  # Esperar 15 segundos após o login
 
     # Verificar se o login foi bem-sucedido e a página está completamente carregada
-    WebDriverWait(driver, 30).until(
+    WebDriverWait(driver, 40).until(
         EC.presence_of_element_located((By.XPATH, '//*[@id="nr-ko-all"]'))
     )
 
@@ -111,7 +111,7 @@ try:
     next_matches_table = site.find('div', attrs={'id': 'nr-ko-all'})
     if next_matches_table:
         print("next_matches_table ok!")
-        # print(next_matches_table)
+        print(next_matches_table)
     else:
         print("next_matches_table não puxou")
 
