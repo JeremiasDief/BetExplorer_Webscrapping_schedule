@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager, ChromeType
 from bs4 import BeautifulSoup
 import time
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 import pandas as pd
 import numpy as np
 import sys
@@ -115,7 +115,7 @@ try:
     next_matches_table = site.find('div', attrs={'id': 'nr-ko-all'})
     if next_matches_table:
         print("next_matches_table ok!")
-        print(next_matches_table.prettify())  # Imprimir o conteúdo completo para depuração
+        # print(next_matches_table.prettify())  # Imprimir o conteúdo completo para depuração
     else:
         print("next_matches_table não puxou")
 
@@ -134,7 +134,15 @@ try:
 
             matches = league.find_all('ul', class_='table-main__matchInfo')
             for match in matches:
-                if match.find('span', class_='table-main__matchHour matchDateStatus'):
+                if match.find('span', class_='table-main__matchHour matchDateStatus table-main__isLive'):
+                    data_dt = match['data-dt']
+                    day, month, year, hour, minute = map(int, data_dt.split(','))
+                    match_time = datetime(year, month, day, hour, minute)
+                    new_match_time = match_time - timedelta(hours=5)
+                    formatted_time = new_match_time.strftime('%H:%M')
+                    match_hour = formatted_time
+                    status = True
+                elif match.find('span', class_='table-main__matchHour matchDateStatus'):
                     match_hour = match.find('span', class_='table-main__matchHour matchDateStatus').get_text(strip=True)
                     status = True
                 else:
