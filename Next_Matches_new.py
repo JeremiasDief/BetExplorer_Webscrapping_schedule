@@ -22,14 +22,14 @@ start_time = time.time()
 # Options
 options = Options()
 chrome_options = [
-    # Remova o modo headless para testes
-    # "--headless",
-    "--disable-gpu",
-    "--window-size=1920,1200",
-    "--ignore-certificate-errors",
-    "--disable-extensions",
+    "--headless",
+    # "--disable-gpu",
+    # "--window-size=1920,1200",
+    # "--ignore-certificate-errors",
+    # "--disable-extensions",
     "--no-sandbox",
-    "--disable-dev-shm-usage"
+    "--remote-debugging-port=9222"
+    # "--disable-dev-shm-usage"
 ]
 for option in chrome_options:
     options.add_argument(option)
@@ -38,7 +38,8 @@ for option in chrome_options:
 service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
 driver = webdriver.Chrome(service=service, options=options)
 
-hoje = date.today()#-timedelta(1)
+# Obter a data de hoje mais dois dias
+hoje = date.today() + timedelta(2)
 hoje_ano = hoje.year
 hoje_mes = hoje.month
 hoje_dia = hoje.day
@@ -47,8 +48,10 @@ hoje_dia = hoje.day
 data = []
 
 try:
-    # Acessar a página inicial
-    driver.get("https://www.betexplorer.com/?year=2025&month=5&day=24")
+    # Acessar a página inicial com a data ajustada
+    url = f"https://www.betexplorer.com/?year={hoje_ano}&month={hoje_mes}&day={hoje_dia}"
+    print(f"Acessando URL: {url}")
+    driver.get(url)
     time.sleep(5)
 
     # Aceitar cookies se a mensagem aparecer
