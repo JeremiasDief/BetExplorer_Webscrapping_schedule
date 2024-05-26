@@ -240,8 +240,8 @@ try:
                     match_link
                 ])
 
-        if country == "Algeria":
-            break
+        # if country == "Algeria":
+        #     break
 
 finally:
     # Fechar o navegador
