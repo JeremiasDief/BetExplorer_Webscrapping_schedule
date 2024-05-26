@@ -16,7 +16,7 @@ jobs:
       with:
         repository: JeremiasDief/private-arquivos
         token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-        path: private-repo
+        path: private-arquivos
 
     - name: Set up Python
       uses: actions/setup-python@v2
