@@ -240,8 +240,8 @@ try:
                     match_link
                 ])
 
-        # if country == "Argentina":
-        #     break
+        if country == "Algeria":
+            break
 
 finally:
     # Fechar o navegador
@@ -277,7 +277,10 @@ finally:
                                  "Odd Home", "Odd Draw", "Odd Away", "Over 2.5", "Under 2.5",
                                  "BTTS Sim", "BTTS Não", "Link"]]
     
-    df_nextmatches.to_excel(f"./Next_Matches/Matches_{date.today()}.xlsx",
+    # Caminho para salvar o arquivo Excel no repositório privado
+    output_path = f"./private-arquivos/Matches_{date.today()}.xlsx"
+
+    df_nextmatches.to_excel(output_path,
                             sheet_name="Jogos",
                             columns=["País", "Campeonato", "Data", "Hora", "Home", "Away",
                                  "H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T",
