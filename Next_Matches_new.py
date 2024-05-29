@@ -259,6 +259,10 @@ finally:
         "Over 2.5", "Under 2.5", "BTTS Sim", "BTTS Não", "Link"
     ])
 
+    # Adicionar 16 colunas em branco após "Odd Away"
+    for i in range(16):
+        df_nextmatches.insert(df_nextmatches.columns.get_loc("Over 2.5"), f'Blank {i+1}', np.nan)
+
     df_nextmatches.replace("", np.nan, inplace=True)
     df_nextmatches["País"] = df_nextmatches["País"].str.upper()
     df_nextmatches["Campeonato"] = df_nextmatches["Campeonato"].str.upper()
@@ -273,9 +277,10 @@ finally:
     df_nextmatches["BTTS Não"] = pd.to_numeric(df_nextmatches["BTTS Não"])
     df_nextmatches[["H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T"]] = np.nan
     df_nextmatches = df_nextmatches[["País", "Campeonato", "Data", "Hora", "Home", "Away",
-                                 "H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T",
-                                 "Odd Home", "Odd Draw", "Odd Away", "Over 2.5", "Under 2.5",
-                                 "BTTS Sim", "BTTS Não", "Link"]]
+                                    "H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T",
+                                    "Odd Home", "Odd Draw", "Odd Away"] + 
+                                    [f'Blank {i+1}' for i in range(16)] +
+                                    ["Over 2.5", "Under 2.5", "BTTS Sim", "BTTS Não", "Link"]]
     
     # Caminho para salvar o arquivo Excel no repositório privado
     output_path = f"./private-arquivos/Matches_{date.today()}.xlsx"
@@ -283,9 +288,10 @@ finally:
     df_nextmatches.to_excel(output_path,
                             sheet_name="Jogos",
                             columns=["País", "Campeonato", "Data", "Hora", "Home", "Away",
-                                 "H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T",
-                                 "Odd Home", "Odd Draw", "Odd Away", "Over 2.5", "Under 2.5",
-                                 "BTTS Sim", "BTTS Não", "Link"],
+                                    "H FT", "A FT", "H HT", "A HT", "H 2T", "A 2T",
+                                    "Odd Home", "Odd Draw", "Odd Away"] + 
+                                    [f'Blank {i+1}' for i in range(16)] +
+                                    ["Over 2.5", "Under 2.5", "BTTS Sim", "BTTS Não", "Link"],
                             header=False, index=False)
     
     # Medir o tempo total de execução
