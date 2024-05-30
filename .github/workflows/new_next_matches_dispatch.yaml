@@ -36,6 +36,9 @@ jobs:
       run: sudo apt install -y chromium-browser
 
     - name: Run the webscraping script
+      env:
+        BETEXPLORER_LOGIN: ${{ secrets.BETEXPLORER_LOGIN }}
+        BETEXPLORER_PASSWORD: ${{ secrets.BETEXPLORER_PASSWORD }}
       run: |
         python Next_Matches_new.py
 

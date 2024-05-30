@@ -1,8 +1,8 @@
-name: Run BetExplorer Webscrapping on schedule
+name: Run Results Webscrapping on schedule
 
 on:
   schedule: 
-    - cron: '0 11 * * *'
+    - cron: '0 8 * * *'
 
 jobs:
   build:
@@ -41,7 +41,7 @@ jobs:
         BETEXPLORER_LOGIN: ${{ secrets.BETEXPLORER_LOGIN }}
         BETEXPLORER_PASSWORD: ${{ secrets.BETEXPLORER_PASSWORD }}
       run: |
-        python Next_Matches_new.py
+        python Results.py
 
     - name: Commit and push to private repo
       run: |-

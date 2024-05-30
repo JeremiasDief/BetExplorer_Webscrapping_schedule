@@ -11,10 +11,11 @@ from datetime import date, timedelta, datetime
 import pandas as pd
 import numpy as np
 import sys
+import os
 
 # Credenciais
-login = "jeremias_dief"
-password = "BetExplorer2023"
+login = os.getenv("BETEXPLORER_LOGIN")
+password = os.getenv("BETEXPLORER_PASSWORD")
 
 # Iniciar medição de tempo
 start_time = time.time()
