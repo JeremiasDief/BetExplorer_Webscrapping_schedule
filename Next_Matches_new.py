@@ -39,7 +39,7 @@ service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
 driver = webdriver.Chrome(service=service, options=options)
 
 # Obter a data de hoje mais dois dias
-hoje = date.today() - timedelta(3)
+hoje = date.today() # - timedelta(3)
 hoje_ano = hoje.year
 hoje_mes = hoje.month
 hoje_dia = hoje.day
