@@ -35,6 +35,15 @@ jobs:
     - name: Install a new Chromium
       run: sudo apt install -y chromium-browser
 
+    - name: Install ChromeDriver
+      run: |
+        CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
+        wget -N http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip -d ~/bin
+        rm chromedriver_linux64.zip
+        sudo mv -f ~/bin/chromedriver /usr/local/bin/chromedriver
+        sudo chmod +x /usr/local/bin/chromedriver
+
     - name: Run the webscraping script
       env:
         BETEXPLORER_LOGIN: ${{ secrets.BETEXPLORER_LOGIN }}
