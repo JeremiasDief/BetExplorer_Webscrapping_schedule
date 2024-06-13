@@ -34,14 +34,19 @@ jobs:
     - name: Remove default Chromium
       run: sudo apt purge chromium-browser
     - name: Install a new Chromium
-      run: sudo apt install -y chromium-browser
+      run: |
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo apt install -y ./google-chrome-stable_current_amd64.deb
+
+    - name: Install ChromeDriver
+      run: |
+        python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install()"
 
     - name: Run the webscraping script
       env:
         BETEXPLORER_LOGIN: ${{ secrets.BETEXPLORER_LOGIN }}
         BETEXPLORER_PASSWORD: ${{ secrets.BETEXPLORER_PASSWORD }}
       run: |
-        python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install()"
         python Next_Matches_new.py
 
     - name: Commit and push to private repo
