@@ -27,6 +27,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install chromedriver-autoinstaller
 
     - name: Remove Chrome
       run: sudo apt purge google-chrome-stable
@@ -35,26 +36,12 @@ jobs:
     - name: Install a new Chromium
       run: sudo apt install -y chromium-browser
 
-    - name: Install ChromeDriver
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y unzip
-        CHROME_VERSION=$(chromium-browser --version | grep -oP '\d+\.\d+\.\d+')
-        CHROME_DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION" || echo "")
-        if [ -z "$CHROME_DRIVER_VERSION" ]; then
-          CHROME_DRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)
-        fi
-        wget -N "https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip"
-        unzip chromedriver_linux64.zip -d ~/bin
-        rm chromedriver_linux64.zip
-        sudo mv -f ~/bin/chromedriver /usr/local/bin/chromedriver
-        sudo chmod +x /usr/local/bin/chromedriver
-
     - name: Run the webscraping script
       env:
         BETEXPLORER_LOGIN: ${{ secrets.BETEXPLORER_LOGIN }}
         BETEXPLORER_PASSWORD: ${{ secrets.BETEXPLORER_PASSWORD }}
       run: |
+        python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install()"
         python Next_Matches_new.py
 
     - name: Commit and push to private repo
