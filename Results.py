@@ -120,9 +120,6 @@ try:
                 match_link = td_ft.find('a')['href']
                 ft_result = td_ft.find('a').get_text()
 
-                if tbody.find('td', class_='table-main__partial').get_text(strip=True):
-                    partial_result = tbody.find('td', class_='table-main__partial').get_text(strip=True)
-
                 if td_ft.find('span'):
                     event = td_ft.find('span').get_text(strip=True)
                     if event in ("POSTP.", "CAN."):
@@ -135,24 +132,11 @@ try:
                         ht_result_home = ht_result_away = t2_result_home = t2_result_away = ""
                         if event == "ABN.":
                             ht_result_home = event
-                    elif event in ("ET", "PEN."):
-                        results = partial_result.strip("()").split(", ")
-                        ht_result_home, ht_result_away = map(int, results[0].split(":"))
-                        t2_result_home, t2_result_away = map(int, results[1].split(":"))
-                        ft_result_home = ht_result_home + t2_result_home
-                        ft_result_away = ht_result_away + t2_result_away
 
                 else:
                     event = ""
                     ft_result_home = int(ft_result.split(":")[0])
                     ft_result_away = int(ft_result.split(":")[1])
-
-                    if partial_result:
-                        results = partial_result.strip("()").split(", ")
-                        ht_result_home, ht_result_away = map(int, results[0].split(":"))
-                        t2_result_home, t2_result_away = map(int, results[1].split(":"))
-                    else:
-                        ht_result_home = ht_result_away = t2_result_home = t2_result_away = ""
 
                 # Navegar para o link do jogo
                 driver.get(f"https://www.betexplorer.com{match_link}")
@@ -176,6 +160,21 @@ try:
                     odd_home = ""
                     odd_draw = ""
                     odd_away = ""
+
+                partial_result = site_match.find('h2', class_='list-details__item__partial').get_text(strip=True)
+                if partial_result:
+                    if event in ("ET", "PEN."):
+                        results = partial_result.strip("()").split(", ")
+                        ht_result_home, ht_result_away = map(int, results[0].split(":"))
+                        t2_result_home, t2_result_away = map(int, results[1].split(":"))
+                        ft_result_home = ht_result_home + t2_result_home
+                        ft_result_away = ht_result_away + t2_result_away
+                    else:
+                        results = partial_result.strip("()").split(", ")
+                        ht_result_home, ht_result_away = map(int, results[0].split(":"))
+                        t2_result_home, t2_result_away = map(int, results[1].split(":"))
+                else:
+                    ht_result_home = ht_result_away = t2_result_home = t2_result_away = ""
 
                 infos_header = site_match.find('div', class_='componentDividerFirst containerResponseMax')
                 country = infos_header.find_all('li')[2].get_text(strip=True)
