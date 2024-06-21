@@ -134,7 +134,7 @@ try:
                             ht_result_home = event
 
                 else:
-                    event = ""
+                    event = False
                     ft_result_home = int(ft_result.split(":")[0])
                     ft_result_away = int(ft_result.split(":")[1])
 
@@ -161,20 +161,22 @@ try:
                     odd_draw = ""
                     odd_away = ""
 
-                partial_result = site_match.find('h2', class_='list-details__item__partial').get_text(strip=True)
-                if partial_result:
-                    if event in ("ET", "PEN."):
-                        results = partial_result.strip("()").split(", ")
-                        ht_result_home, ht_result_away = map(int, results[0].split(":"))
-                        t2_result_home, t2_result_away = map(int, results[1].split(":"))
-                        ft_result_home = ht_result_home + t2_result_home
-                        ft_result_away = ht_result_away + t2_result_away
+                if event not in ("POSTP.", "CAN.", "ABN.", "AWA."):
+                    partial_result = site_match.find('h2', class_='list-details__item__partial').get_text(strip=True)
+                
+                    if partial_result != None and partial_result[0] == "(":
+                        if event in ("ET", "PEN."):
+                            results = partial_result.strip("()").split(", ")
+                            ht_result_home, ht_result_away = map(int, results[0].split(":"))
+                            t2_result_home, t2_result_away = map(int, results[1].split(":"))
+                            ft_result_home = ht_result_home + t2_result_home
+                            ft_result_away = ht_result_away + t2_result_away
+                        else:
+                            results = partial_result.strip("()").split(", ")
+                            ht_result_home, ht_result_away = map(int, results[0].split(":"))
+                            t2_result_home, t2_result_away = map(int, results[1].split(":"))
                     else:
-                        results = partial_result.strip("()").split(", ")
-                        ht_result_home, ht_result_away = map(int, results[0].split(":"))
-                        t2_result_home, t2_result_away = map(int, results[1].split(":"))
-                else:
-                    ht_result_home = ht_result_away = t2_result_home = t2_result_away = ""
+                        ht_result_home = ht_result_away = t2_result_home = t2_result_away = ""
 
                 infos_header = site_match.find('div', class_='componentDividerFirst containerResponseMax')
                 country = infos_header.find_all('li')[2].get_text(strip=True)
