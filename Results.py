@@ -129,9 +129,8 @@ try:
                         score_part = ft_result.split()[0]
                         ft_result_home = int(score_part.split(":")[0])
                         ft_result_away = int(score_part.split(":")[1])
-                        ht_result_home = ht_result_away = t2_result_home = t2_result_away = ""
-                        if event == "ABN.":
-                            ht_result_home = event
+                        ht_result_home = event
+                        ht_result_away = t2_result_home = t2_result_away = ""
 
                 else:
                     event = False
