@@ -182,7 +182,8 @@ try:
                 league = infos_header.find_all('li')[3].get_text(strip=True).rsplit(' ', 1)[0]
                 home_team = infos_header.find_all('li')[4].get_text(strip=True).split(' - ')[0]
                 away_team = infos_header.find_all('li')[4].get_text(strip=True).split(' - ')[1]
-                match_hour = site_match.find('p', class_='list-details__item__date headerTournamentDate').get_text(strip=True).split(' - ')[1]
+                if len(site_match.find('p', class_='list-details__item__date headerTournamentDate').get_text(strip=True).split(' - ')) > 0:
+                    match_hour = site_match.find('p', class_='list-details__item__date headerTournamentDate').get_text(strip=True).split(' - ')[1]
 
                 # Clicar no elemento específico dentro da página do jogo
                 ou_25_element = WebDriverWait(driver, 10).until(
