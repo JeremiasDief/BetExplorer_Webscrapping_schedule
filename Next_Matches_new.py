@@ -70,9 +70,17 @@ try:
         EC.element_to_be_clickable((By.XPATH, '//*[@id="js-timezone"]'))
     ).click()
     
-    WebDriverWait(driver, 30).until(
-        EC.element_to_be_clickable((By.XPATH, '//*[@id="js-timezone"]/ul/li[21]/button'))
-    ).click()
+    WebDriverWait(driver, 20).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="js-timezone"]/ul/li[21]/button'))
+    )
+
+    # Usar JavaScript para clicar no elemento
+    driver.execute_script("""
+        var element = document.evaluate('//*[@id="js-timezone"]/ul/li[21]/button', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        if (element) {
+            element.click();
+        }
+    """)
 
     # Clicar no botão de login
     login_button = WebDriverWait(driver, 30).until(
@@ -195,10 +203,18 @@ try:
                     odd_away = ""
 
                 # Clicar no elemento específico dentro da página do jogo
-                ou_25_element = WebDriverWait(driver, 10).until(
-                    EC.element_to_be_clickable((By.XPATH, '//*[@id="bettype_menu_best"]/li[2]'))
+
+                WebDriverWait(driver, 20).until(
+                    EC.presence_of_element_located((By.XPATH, '//*[@id="bettype_menu_best"]/li[2]'))
                 )
-                ou_25_element.click()
+
+                # Usar JavaScript para clicar no elemento
+                driver.execute_script("""
+                    var element = document.evaluate('//*[@id="bettype_menu_best"]/li[2]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                    if (element) {
+                        element.click();
+                    }
+                """)
                 
                 # Adicionar um tempo de espera para garantir que a ação seja concluída
                 time.sleep(2)
@@ -219,10 +235,17 @@ try:
                     odd_under = ""
 
                 # Clicar no elemento específico dentro da página do jogo
-                btts_element = WebDriverWait(driver, 10).until(
-                    EC.element_to_be_clickable((By.XPATH, '//*[@id="bettype_menu_best"]/li[6]'))
+                WebDriverWait(driver, 20).until(
+                    EC.presence_of_element_located((By.XPATH, '//*[@id="bettype_menu_best"]/li[6]'))
                 )
-                btts_element.click()
+
+                # Usar JavaScript para clicar no elemento
+                driver.execute_script("""
+                    var element = document.evaluate('//*[@id="bettype_menu_best"]/li[6]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                    if (element) {
+                        element.click();
+                    }
+                """)
                 
                 # Adicionar um tempo de espera para garantir que a ação seja concluída
                 time.sleep(2)
