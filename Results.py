@@ -40,7 +40,7 @@ service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
 driver = webdriver.Chrome(service=service, options=options)
 
 # Obter a data de ontem mais dois dias
-ontem = date.today() - timedelta(3)
+ontem = date.today() - timedelta(2)
 ontem_ano = ontem.year
 ontem_mes = ontem.month
 ontem_dia = ontem.day
