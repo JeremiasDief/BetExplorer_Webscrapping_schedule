@@ -196,8 +196,18 @@ try:
                 league = infos_header.find_all('li')[3].get_text(strip=True).rsplit(' ', 1)[0]
                 home_team = infos_header.find_all('li')[4].get_text(strip=True).split(' - ')[0]
                 away_team = infos_header.find_all('li')[4].get_text(strip=True).split(' - ')[1]
-                if len(site_match.find('p', class_='list-details__item__date headerTournamentDate').get_text(strip=True).split(' - ')) > 0:
-                    match_hour = site_match.find('p', class_='list-details__item__date headerTournamentDate').get_text(strip=True).split(' - ')[1]
+                date_text = site_match.find('p', class_='list-details__item__date headerTournamentDate')
+                if date_text:
+                    date_parts = date_text.get_text(strip=True).split(' - ')
+                    if len(date_parts) > 1:  # Verifica se a lista tem pelo menos dois elementos
+                        match_hour = date_parts[1]
+                    else:
+                        match_hour = ""  # Caso o segundo item não esteja disponível
+                else:
+                    match_hour = ""  # Caso o elemento não seja encontrado
+
+                # if len(site_match.find('p', class_='list-details__item__date headerTournamentDate').get_text(strip=True).split(' - ')) > 0:
+                #     match_hour = site_match.find('p', class_='list-details__item__date headerTournamentDate').get_text(strip=True).split(' - ')[1]
 
                 # Clicar no elemento específico dentro da página do jogo
                 WebDriverWait(driver, 20).until(
