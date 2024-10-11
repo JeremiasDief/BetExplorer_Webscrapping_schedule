@@ -175,7 +175,7 @@ try:
                     odd_away = ""
 
                 if event not in ("POSTP.", "CAN.", "ABN.", "AWA."):
-                    partial_result = site_match.find('h2', class_='list-details__item__partial').get_text(strip=True)
+                    partial_result = site_match.find('div', class_='list-details__item__partial bold').get_text(strip=True)
                 
                     if partial_result != None and partial_result[0] == "(":
                         if event in ("ET", "PEN."):
