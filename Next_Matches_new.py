@@ -71,12 +71,12 @@ try:
     ).click()
     
     WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="js-timezone"]/ul/li[21]/button'))
+        EC.presence_of_element_located((By.XPATH, '//*[@id="js-timezone"]/ul/li[22]/button'))
     )
 
     # Usar JavaScript para clicar no elemento
     driver.execute_script("""
-        var element = document.evaluate('//*[@id="js-timezone"]/ul/li[21]/button', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        var element = document.evaluate('//*[@id="js-timezone"]/ul/li[22]/button', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
         if (element) {
             element.click();
         }
