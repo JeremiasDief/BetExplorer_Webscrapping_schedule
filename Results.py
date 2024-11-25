@@ -165,14 +165,23 @@ try:
 
                 table_match_odds = site_match.find('table', attrs={'data-handicap': '0'})
                 if table_match_odds:
-                    tfoot_match_odds = table_match_odds.find('tfoot', attrs={"id": "match-add-to-selection"})
-                    odd_home = tfoot_match_odds.find_all('td', class_='table-main__detail-odds')[0].get_text(strip=True)
-                    odd_draw = tfoot_match_odds.find_all('td', class_='table-main__detail-odds')[1].get_text(strip=True)
-                    odd_away = tfoot_match_odds.find_all('td', class_='table-main__detail-odds')[2].get_text(strip=True)
+                    # Tentar encontrar a linha correspondente à Pinnacle
+                    row_pinnacle = table_match_odds.find('tr', attrs={'data-bookie': 'pinnacle'})
+                    row_to_use = row_pinnacle if row_pinnacle else table_match_odds.find('tr', attrs={'data-bid': True})
+                    
+                    if row_to_use:
+                        # Extrair as odds da linha
+                        odds_cells = row_to_use.find_all('td', class_='table-main__detail-odds')
+                        if len(odds_cells) >= 3:  # Garantir que há pelo menos 3 odds
+                            odd_home = odds_cells[0].get_text(strip=True)
+                            odd_draw = odds_cells[1].get_text(strip=True)
+                            odd_away = odds_cells[2].get_text(strip=True)
+                        else:
+                            odd_home, odd_draw, odd_away = "", "", ""
+                    else:
+                        odd_home, odd_draw, odd_away = "", "", ""
                 else:
-                    odd_home = ""
-                    odd_draw = ""
-                    odd_away = ""
+                    odd_home, odd_draw, odd_away = "", "", ""
 
                 if event not in ("POSTP.", "CAN.", "ABN.", "AWA."):
                     partial_result = site_match.find('div', class_='list-details__item__partial bold').get_text(strip=True)
@@ -233,12 +242,22 @@ try:
 
                 table_odds_over = site_match.find('table', attrs={'data-handicap': '2.50'})
                 if table_odds_over:
-                    tfoot_odds_over = table_odds_over.find('tfoot', attrs={"id": "match-add-to-selection"})
-                    odd_over = tfoot_odds_over.find_all('td', class_='table-main__detail-odds')[0].get_text(strip=True)
-                    odd_under = tfoot_odds_over.find_all('td', class_='table-main__detail-odds')[1].get_text(strip=True)
+                    # Tentar encontrar a linha correspondente à Pinnacle
+                    row_pinnacle = table_odds_over.find('tr', attrs={'data-bookie': 'pinnacle'})
+                    row_to_use = row_pinnacle if row_pinnacle else table_odds_over.find('tr', attrs={'data-bid': True})
+                    
+                    if row_to_use:
+                        # Extrair odds da linha
+                        odds_cells = row_to_use.find_all('td', class_='table-main__detail-odds')
+                        if len(odds_cells) >= 2:  # Verificar se há pelo menos 2 odds (Over e Under)
+                            odd_over = odds_cells[0].get_text(strip=True)
+                            odd_under = odds_cells[1].get_text(strip=True)
+                        else:
+                            odd_over, odd_under = "", ""
+                    else:
+                        odd_over, odd_under = "", ""
                 else:
-                    odd_over = ""
-                    odd_under = ""
+                    odd_over, odd_under = "", ""
 
                 # Clicar no elemento específico dentro da página do jogo
                 WebDriverWait(driver, 20).until(
@@ -264,12 +283,22 @@ try:
 
                 table_btts = site_match.find('table', attrs={'data-handicap': '0'})
                 if table_btts:
-                    tfoot_btts = table_btts.find('tfoot', attrs={"id": "match-add-to-selection"})
-                    odd_btts_yes = table_btts.find_all('td', class_='table-main__detail-odds')[0].get_text(strip=True)
-                    odd_btts_no = table_btts.find_all('td', class_='table-main__detail-odds')[1].get_text(strip=True)
+                    # Tentar encontrar a linha correspondente à Pinnacle
+                    row_pinnacle = table_btts.find('tr', attrs={'data-bookie': 'pinnacle'})
+                    row_to_use = row_pinnacle if row_pinnacle else table_btts.find('tr', attrs={'data-bid': True})
+                    
+                    if row_to_use:
+                        # Extrair odds "Yes" e "No" da linha
+                        odds_cells = row_to_use.find_all('td', class_='table-main__detail-odds')
+                        if len(odds_cells) >= 2:  # Verificar se há pelo menos 2 odds
+                            odd_btts_yes = odds_cells[0].get_text(strip=True)
+                            odd_btts_no = odds_cells[1].get_text(strip=True)
+                        else:
+                            odd_btts_yes, odd_btts_no = "", ""
+                    else:
+                        odd_btts_yes, odd_btts_no = "", ""
                 else:
-                    odd_btts_yes = ""
-                    odd_btts_no = ""
+                    odd_btts_yes, odd_btts_no = "", ""
 
                 # Adicionar os dados à lista
                 data.append([
