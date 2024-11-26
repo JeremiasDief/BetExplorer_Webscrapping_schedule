@@ -40,7 +40,7 @@ service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
 driver = webdriver.Chrome(service=service, options=options)
 
 # Obter a data de hoje mais dois dias
-hoje = date.today() - timedelta(2)
+hoje = date.today() - timedelta(3)
 hoje_ano = hoje.year
 hoje_mes = hoje.month
 hoje_dia = hoje.day
@@ -147,7 +147,7 @@ try:
                     data_dt = match['data-dt']
                     day, month, year, hour, minute = map(int, data_dt.split(','))
                     match_time = datetime(year, month, day, hour, minute)
-                    new_match_time = match_time - timedelta(hours=5)
+                    # new_match_time = match_time - timedelta(hours=5) # usada para horário de verao europeu
                     formatted_time = new_match_time.strftime('%H:%M')
                     match_hour = formatted_time
                     status = True
@@ -193,21 +193,31 @@ try:
 
                 table_match_odds = site_match.find('table', attrs={'data-handicap': '0'})
                 if table_match_odds:
-                    # Tentar encontrar a linha correspondente à Pinnacle
-                    row_pinnacle = table_match_odds.find('tr', attrs={'data-bookie': 'pinnacle'})
-                    row_to_use = row_pinnacle if row_pinnacle else table_match_odds.find('tr', attrs={'data-bid': True})
-                    
-                    if row_to_use:
-                        # Extrair as odds da linha
-                        odds_cells = row_to_use.find_all('td', class_='table-main__detail-odds')
-                        if len(odds_cells) >= 3:  # Garantir que há pelo menos 3 odds
+                    rows = table_match_odds.find_all('tr', class_=['odd', 'even'])
+
+                    for i, row in enumerate(rows):
+                        bookmaker = row.find('td', class_='h-text-left').get_text(strip=True)
+                        odds_cells = row.find_all('td', class_='table-main__detail-odds')
+
+                        if "Pinnacle" in bookmaker:
                             odd_home = odds_cells[0].get_text(strip=True)
                             odd_draw = odds_cells[1].get_text(strip=True)
                             odd_away = odds_cells[2].get_text(strip=True)
+                            break
+
+                        elif i == 0:
+                            odd_home = odds_cells[0].get_text(strip=True)
+                            odd_draw = odds_cells[1].get_text(strip=True)
+                            odd_away = odds_cells[2].get_text(strip=True)
+
+                        elif "Betfair" in bookmaker:
+                            odd_home = odds_cells[0].get_text(strip=True)
+                            odd_draw = odds_cells[1].get_text(strip=True)
+                            odd_away = odds_cells[2].get_text(strip=True)
+
                         else:
-                            odd_home, odd_draw, odd_away = "", "", ""
-                    else:
-                        odd_home, odd_draw, odd_away = "", "", ""
+                            continue
+
                 else:
                     odd_home, odd_draw, odd_away = "", "", ""
 
@@ -236,20 +246,28 @@ try:
 
                 table_odds_over = site_match.find('table', attrs={'data-handicap': '2.50'})
                 if table_odds_over:
-                    # Tentar encontrar a linha correspondente à Pinnacle
-                    row_pinnacle = table_odds_over.find('tr', attrs={'data-bookie': 'pinnacle'})
-                    row_to_use = row_pinnacle if row_pinnacle else table_odds_over.find('tr', attrs={'data-bid': True})
-                    
-                    if row_to_use:
-                        # Extrair odds da linha
-                        odds_cells = row_to_use.find_all('td', class_='table-main__detail-odds')
-                        if len(odds_cells) >= 2:  # Verificar se há pelo menos 2 odds (Over e Under)
+                    rows = table_odds_over.find_all('tr', class_=['odd', 'even'])
+
+                    for i, row in enumerate(rows):
+                        bookmaker = row.find('td', class_='h-text-left').get_text(strip=True)
+                        odds_cells = row.find_all('td', class_='table-main__detail-odds')
+
+                        if "Pinnacle" in bookmaker:
                             odd_over = odds_cells[0].get_text(strip=True)
                             odd_under = odds_cells[1].get_text(strip=True)
+                            break
+
+                        elif i == 0:
+                            odd_over = odds_cells[0].get_text(strip=True)
+                            odd_under = odds_cells[1].get_text(strip=True)
+
+                        elif "Betfair" in bookmaker:
+                            odd_over = odds_cells[0].get_text(strip=True)
+                            odd_under = odds_cells[1].get_text(strip=True)
+
                         else:
-                            odd_over, odd_under = "", ""
-                    else:
-                        odd_over, odd_under = "", ""
+                            continue
+
                 else:
                     odd_over, odd_under = "", ""
 
@@ -277,20 +295,28 @@ try:
 
                 table_btts = site_match.find('table', attrs={'data-handicap': '0'})
                 if table_btts:
-                    # Tentar encontrar a linha correspondente à Pinnacle
-                    row_pinnacle = table_btts.find('tr', attrs={'data-bookie': 'pinnacle'})
-                    row_to_use = row_pinnacle if row_pinnacle else table_btts.find('tr', attrs={'data-bid': True})
-                    
-                    if row_to_use:
-                        # Extrair odds "Yes" e "No" da linha
-                        odds_cells = row_to_use.find_all('td', class_='table-main__detail-odds')
-                        if len(odds_cells) >= 2:  # Verificar se há pelo menos 2 odds
+                    rows = table_btts.find_all('tr', class_=['odd', 'even'])
+
+                    for i, row in enumerate(rows):
+                        bookmaker = row.find('td', class_='h-text-left').get_text(strip=True)
+                        odds_cells = row.find_all('td', class_='table-main__detail-odds')
+
+                        if "Pinnacle" in bookmaker:
                             odd_btts_yes = odds_cells[0].get_text(strip=True)
                             odd_btts_no = odds_cells[1].get_text(strip=True)
+                            break
+
+                        elif i == 0:
+                            odd_btts_yes = odds_cells[0].get_text(strip=True)
+                            odd_btts_no = odds_cells[1].get_text(strip=True)
+
+                        elif "Betfair" in bookmaker:
+                            odd_btts_yes = odds_cells[0].get_text(strip=True)
+                            odd_btts_no = odds_cells[1].get_text(strip=True)
+
                         else:
-                            odd_btts_yes, odd_btts_no = "", ""
-                    else:
-                        odd_btts_yes, odd_btts_no = "", ""
+                            continue
+
                 else:
                     odd_btts_yes, odd_btts_no = "", ""
 
