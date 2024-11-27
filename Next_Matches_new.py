@@ -147,7 +147,7 @@ try:
                     data_dt = match['data-dt']
                     day, month, year, hour, minute = map(int, data_dt.split(','))
                     match_time = datetime(year, month, day, hour, minute)
-                    # new_match_time = match_time - timedelta(hours=5) # usada para horário de verao europeu
+                    new_match_time = match_time - timedelta(hours=4) #- timedelta(hours=5) # usada para horário de verao europeu
                     formatted_time = new_match_time.strftime('%H:%M')
                     match_hour = formatted_time
                     status = True
