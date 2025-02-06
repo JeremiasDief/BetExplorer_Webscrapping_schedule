@@ -68,17 +68,17 @@ for data_passada in datas_passadas:
 
         # Aceitar cookies se a mensagem aparecer
         try:
-            accept_cookies_button = WebDriverWait(driver, 20).until(
+            print("Tentando aceitar cookies...")
+            WebDriverWait(driver, 60).until(
                 EC.element_to_be_clickable((By.XPATH, '//*[@id="onetrust-accept-btn-handler"]'))
-            )
-            accept_cookies_button.click()
+            ).click()
+            print("Cookies aceitos!")
         except Exception as e:
-            print(f"Erro ao aceitar cookies: {e}")
-            pass
+            print(f"Erro ao aceitar cookies (pode não ser necessário): {e}")
 
         # # Cancelar aviso site br se a mensagem aparecer
         try:
-            cancel_br_button = WebDriverWait(driver, 10).until(
+            cancel_br_button = WebDriverWait(driver, 60).until(
                 EC.element_to_be_clickable((By.XPATH, '//*[@id="js-window-language-redirect"]/div[2]/button[2]'))
             )
             cancel_br_button.click()
