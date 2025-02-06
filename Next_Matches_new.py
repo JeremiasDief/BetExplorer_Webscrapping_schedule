@@ -204,11 +204,39 @@ for data_passada in datas_passadas:
 
                     match_link = match.find('a', class_='table-main__participants participantsMobile participantsHomeAwayMobileWidth')['href']
 
-                    # Navegar para o link do jogo
-                    driver.get(f"https://www.betexplorer.com{match_link}")
+                    # # Navegar para o link do jogo
+                    # driver.get(f"https://www.betexplorer.com{match_link}")
 
-                    # Adicionar um tempo de espera para carregar a nova página
-                    time.sleep(2)  # Esperar 5 segundos para carregar a nova página
+                    # # Adicionar um tempo de espera para carregar a nova página
+                    # time.sleep(5)  # Esperar 5 segundos para carregar a nova página
+
+                    MAX_TENTATIVAS = 3  # Quantas vezes tentar recarregar a página antes de desistir
+                    tentativas = 0
+
+                    while tentativas < MAX_TENTATIVAS:
+                        print(f"Tentando abrir jogo: {match_link} (Tentativa {tentativas+1})")
+
+                        # Navegar para o link do jogo
+                        driver.get(f"https://www.betexplorer.com{match_link}")
+
+                        try:
+                            # Esperar até que um elemento essencial carregue (exemplo: título do jogo)
+                            WebDriverWait(driver, 10).until(
+                                EC.presence_of_element_located((By.CLASS_NAME, 'list-details__item__date'))
+                            )
+                            print("Página carregada com sucesso!")
+                            break  # Sai do loop se a página carregou corretamente
+
+                        except Exception as e:
+                            print(f"Página não carregou corretamente. Tentando novamente... ({e})")
+                            tentativas += 1
+                            if tentativas < MAX_TENTATIVAS:
+                                driver.refresh()  # Dá um refresh e tenta de novo
+
+                    # Se falhar após todas as tentativas, pular esse jogo
+                    if tentativas == MAX_TENTATIVAS:
+                        print(f"Falha ao carregar o jogo após {MAX_TENTATIVAS} tentativas. Pulando...")
+                        continue
 
                     # Obter o código-fonte da página após o login
                     page_source_match = driver.page_source
