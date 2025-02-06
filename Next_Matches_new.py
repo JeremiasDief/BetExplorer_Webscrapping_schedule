@@ -210,32 +210,42 @@ for data_passada in datas_passadas:
                     # # Adicionar um tempo de espera para carregar a nova página
                     # time.sleep(5)  # Esperar 5 segundos para carregar a nova página
 
-                    MAX_TENTATIVAS = 3  # Quantas vezes tentar recarregar a página antes de desistir
+                    MAX_TENTATIVAS = 5  # Aumentamos para 5 tentativas para garantir que a página carregue
                     tentativas = 0
+                    pagina_carregada = False
 
                     while tentativas < MAX_TENTATIVAS:
-                        print(f"Tentando abrir jogo: {match_link} (Tentativa {tentativas+1})")
-
-                        # Navegar para o link do jogo
+                        print(f"🟡 Tentando abrir jogo: {match_link} (Tentativa {tentativas+1})")
                         driver.get(f"https://www.betexplorer.com{match_link}")
+                        time.sleep(3)
 
                         try:
-                            # Esperar até que um elemento essencial carregue (exemplo: título do jogo)
-                            WebDriverWait(driver, 10).until(
-                                EC.presence_of_element_located((By.CLASS_NAME, 'list-details__item__date'))
+                            # Garantir que a página carregou corretamente (Título do jogo ou Odds)
+                            WebDriverWait(driver, 15).until(
+                                EC.presence_of_element_located((By.XPATH, '//h1[contains(@class, "list-details__item__header")]'))
                             )
-                            print("Página carregada com sucesso!")
-                            break  # Sai do loop se a página carregou corretamente
+                            print("✅ Página carregada com sucesso!")
+
+                            # Verificar se as odds carregaram (caso contrário, tentar novamente)
+                            odds_elements = driver.find_elements(By.CLASS_NAME, "table-main__detail-odds")
+                            if odds_elements:
+                                print("✅ Odds detectadas, página pronta para extração!")
+                                pagina_carregada = True
+                                break  # Sai do loop se tudo carregou corretamente
+                            else:
+                                print("⚠️ Página abriu, mas odds não carregaram. Tentando novamente...")
 
                         except Exception as e:
-                            print(f"Página não carregou corretamente. Tentando novamente... ({e})")
-                            tentativas += 1
-                            if tentativas < MAX_TENTATIVAS:
-                                driver.refresh()  # Dá um refresh e tenta de novo
+                            print(f"❌ Página não carregou corretamente. Tentando novamente... ({e})")
+                        
+                        tentativas += 1
+                        if tentativas < MAX_TENTATIVAS:
+                            driver.refresh()  # Dá refresh e tenta de novo
 
-                    # Se falhar após todas as tentativas, pular esse jogo
-                    if tentativas == MAX_TENTATIVAS:
-                        print(f"Falha ao carregar o jogo após {MAX_TENTATIVAS} tentativas. Pulando...")
+                    # Se falhar após todas as tentativas, registrar erro e seguir
+                    if not pagina_carregada:
+                        print(f"❌ Falha ao carregar o jogo após {MAX_TENTATIVAS} tentativas. Registrando erro e pulando...")
+                        data.append(["Erro", "Erro", "Erro", "Erro", "Erro", "Erro", "Erro", "Erro", "Erro", "Erro", "Erro", "Erro", "Erro", match_link])
                         continue
 
                     # Obter o código-fonte da página após o login
