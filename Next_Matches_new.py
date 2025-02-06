@@ -15,7 +15,7 @@ import os
 
 # Para uso quando precisar rodar o código para mais de uma data (em casos de erros no run do schedule)
 # Lembrar de criar o laço for logo abaixo > for data_passada in datas_passadas: <
-datas_passadas = [(date(2025, 1, 31) + timedelta(days=i)) for i in range(6)]
+datas_passadas = [(date(2025, 1, 31) + timedelta(days=i)) for i in range(7)]
 
 for data_passada in datas_passadas:
     # Credenciais
@@ -244,8 +244,8 @@ for data_passada in datas_passadas:
 
                     # Clicar no elemento específico dentro da página do jogo
 
-                    WebDriverWait(driver, 20).until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="bettype_menu_best"]/li[2]'))
+                    WebDriverWait(driver, 60).until(
+                        EC.element_to_be_clickable((By.XPATH, '//*[@id="bettype_menu_best"]/li[2]'))
                     )
 
                     # Usar JavaScript para clicar no elemento
@@ -293,8 +293,8 @@ for data_passada in datas_passadas:
                         odd_over, odd_under = "", ""
 
                     # Clicar no elemento específico dentro da página do jogo
-                    WebDriverWait(driver, 20).until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="bettype_menu_best"]/li[6]'))
+                    WebDriverWait(driver, 60).until(
+                        EC.element_to_be_clickable((By.XPATH, '//*[@id="bettype_menu_best"]/li[6]'))
                     )
 
                     # Usar JavaScript para clicar no elemento
@@ -352,7 +352,7 @@ for data_passada in datas_passadas:
 
                     # Adicionar os dados à lista
                     data.append([
-                        country, league_name, date.today(), match_hour, home_team, away_team,
+                        country, league_name, hoje, match_hour, home_team, away_team,
                         odd_home, odd_draw, odd_away, odd_over, odd_under, odd_btts_yes, odd_btts_no,
                         match_link
                     ])

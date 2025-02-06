@@ -29,7 +29,7 @@ for data_passada in datas_passadas:
     # Options
     options = Options()
     chrome_options = [
-        "--headless",
+        "--headless=new",
         # "--disable-gpu",
         # "--window-size=1920,1200",
         # "--ignore-certificate-errors",
@@ -252,8 +252,8 @@ for data_passada in datas_passadas:
                     #     match_hour = site_match.find('p', class_='list-details__item__date headerTournamentDate').get_text(strip=True).split(' - ')[1]
 
                     # Clicar no elemento específico dentro da página do jogo
-                    WebDriverWait(driver, 20).until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="bettype_menu_best"]/li[2]'))
+                    WebDriverWait(driver, 60).until(
+                        EC.element_to_be_clickable((By.XPATH, '//*[@id="bettype_menu_best"]/li[2]'))
                     )
 
                     # Usar JavaScript para clicar no elemento
@@ -301,8 +301,8 @@ for data_passada in datas_passadas:
                         odd_over, odd_under = "", ""
 
                     # Clicar no elemento específico dentro da página do jogo
-                    WebDriverWait(driver, 20).until(
-                        EC.presence_of_element_located((By.XPATH, '//*[@id="bettype_menu_best"]/li[6]'))
+                    WebDriverWait(driver, 60).until(
+                        EC.element_to_be_clickable((By.XPATH, '//*[@id="bettype_menu_best"]/li[6]'))
                     )
 
                     # Usar JavaScript para clicar no elemento
