@@ -40,6 +40,10 @@ for data_passada in datas_passadas:
     for option in chrome_options:
         options.add_argument(option)
 
+    options.add_argument(
+    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+    )
+
     # Configurar o WebDriver usando webdriver-manager
     service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
     driver = webdriver.Chrome(service=service, options=options)
