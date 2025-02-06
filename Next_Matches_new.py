@@ -76,15 +76,15 @@ for data_passada in datas_passadas:
             print(f"Erro ao aceitar cookies: {e}")
             pass
 
-        # Cancelar aviso site br se a mensagem aparecer
-        try:
-            cancel_br_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, '//*[@id="js-window-language-redirect"]/div[2]/button[2]'))
-            )
-            cancel_br_button.click()
-        except:
-            print("Não foi encontrado o botão de cancelar site br")
-            pass
+        # # Cancelar aviso site br se a mensagem aparecer
+        # try:
+        #     cancel_br_button = WebDriverWait(driver, 10).until(
+        #         EC.element_to_be_clickable((By.XPATH, '//*[@id="js-window-language-redirect"]/div[2]/button[2]'))
+        #     )
+        #     cancel_br_button.click()
+        # except:
+        #     print("Não foi encontrado o botão de cancelar site br")
+        #     pass
 
         # Ajustar o timezone
         WebDriverWait(driver, 30).until(
