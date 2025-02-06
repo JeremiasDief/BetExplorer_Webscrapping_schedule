@@ -217,7 +217,7 @@ for data_passada in datas_passadas:
                     while tentativas < MAX_TENTATIVAS:
                         print(f"🟡 Tentando abrir jogo: {match_link} (Tentativa {tentativas+1})")
                         driver.get(f"https://www.betexplorer.com{match_link}")
-                        time.sleep(3)
+                        time.sleep(2)
 
                         try:
                             # Garantir que a página carregou corretamente (Título do jogo ou Odds)
@@ -241,6 +241,7 @@ for data_passada in datas_passadas:
                         tentativas += 1
                         if tentativas < MAX_TENTATIVAS:
                             driver.refresh()  # Dá refresh e tenta de novo
+                            time.sleep(5)
 
                     # Se falhar após todas as tentativas, registrar erro e seguir
                     if not pagina_carregada:
