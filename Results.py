@@ -80,7 +80,7 @@ for data_passada in datas_passadas:
         # Cancelar aviso site br se a mensagem aparecer
         try:
             cancel_br_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, '/html/body/div[4]/div/div/div/div[16]/div[2]/button[2]'))
+                EC.element_to_be_clickable((By.XPATH, '//*[@id="js-window-language-redirect"]/div[2]/button[2]'))
             )
             cancel_br_button.click()
         except:
