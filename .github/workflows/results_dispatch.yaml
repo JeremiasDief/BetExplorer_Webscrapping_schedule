@@ -29,11 +29,11 @@ jobs:
         pip install -r requirements.txt
         pip install chromedriver-autoinstaller
 
-    - name: Install ChromeDriver manually
+    - name: Install Latest ChromeDriver
       run: |
-        CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
-        echo "Chrome version detected: $CHROME_VERSION"
-        wget "https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION/linux64/chromedriver-linux64.zip"
+        LATEST_CHROMEDRIVER_VERSION=$(curl -sS https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json | jq -r '.versions[-1].version')
+        echo "Latest available ChromeDriver version: $LATEST_CHROMEDRIVER_VERSION"
+        wget "https://storage.googleapis.com/chrome-for-testing-public/$LATEST_CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip"
         unzip chromedriver-linux64.zip
         sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
         chmod +x /usr/local/bin/chromedriver
