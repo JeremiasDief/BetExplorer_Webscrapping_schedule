@@ -1,10 +1,13 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.chrome.service import Service
+# from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager, ChromeType
+# from webdriver_manager.chrome import ChromeDriverManager, ChromeType
+from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.firefox.options import Options
+from webdriver_manager.firefox import GeckoDriverManager
 from bs4 import BeautifulSoup
 import time
 from datetime import date, timedelta, datetime
@@ -26,31 +29,38 @@ password = os.getenv("BETEXPLORER_PASSWORD")
 # Iniciar medição de tempo
 start_time = time.time()
 
-# Options
+# # Options
+# options = Options()
+# chrome_options = [
+#     "--headless=new",
+#     # "--disable-gpu",
+#     # "--window-size=1920,1200",
+#     # "--ignore-certificate-errors",
+#     # "--disable-extensions",
+#     "--no-sandbox",
+#     "--remote-debugging-port=9222"
+#     # "--disable-blink-features=AutomationControlled",
+#     # "--disable-features=NetworkService"
+#     # "--disable-dev-shm-usage"
+# ]
+# for option in chrome_options:
+#     options.add_argument(option)
+
+# options.add_argument(
+#     "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+# )
+
+# # Configurar o WebDriver usando webdriver-manager
+# service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+# # service = Service(ChromeDriverManager().install()) # Para uso do código na máquina local
+# driver = webdriver.Chrome(service=service, options=options)
+
 options = Options()
-chrome_options = [
-    "--headless=new",
-    # "--disable-gpu",
-    # "--window-size=1920,1200",
-    "--ignore-certificate-errors",
-    # "--disable-extensions",
-    "--no-sandbox",
-    "--remote-debugging-port=9222",
-    "--disable-blink-features=AutomationControlled",
-    "--disable-features=NetworkService"
-    # "--disable-dev-shm-usage"
-]
-for option in chrome_options:
-    options.add_argument(option)
+options.headless = True  # Rodar em modo headless (sem interface gráfica)
 
-options.add_argument(
-    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-)
-
-# Configurar o WebDriver usando webdriver-manager
-service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
-# service = Service(ChromeDriverManager().install()) # Para uso do código na máquina local
-driver = webdriver.Chrome(service=service, options=options)
+# Configurar o WebDriver para Firefox
+service = Service(GeckoDriverManager().install())
+driver = webdriver.Firefox(service=service, options=options)
 
 # Obter a data de hoje mais dois dias (de uso no código da automação)
 hoje = date.today() #- timedelta(1)

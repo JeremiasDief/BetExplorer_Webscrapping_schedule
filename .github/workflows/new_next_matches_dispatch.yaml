@@ -29,22 +29,13 @@ jobs:
         pip install -r requirements.txt
         pip install chromedriver-autoinstaller
 
-    - name: Remove Chrome
-      run: sudo apt purge google-chrome-stable
-    - name: Remove default Chromium
-      run: sudo apt purge chromium-browser
-    - name: Install a new Chromium
+    - name: Install Firefox and GeckoDriver
       run: |
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo apt install -y ./google-chrome-stable_current_amd64.deb
-
-    - name: Install ChromeDriver
-      run: |
-        python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install()"
-
-    - name: Reset Network Connection
-      run: |
-        sudo sysctl -w net.ipv4.tcp_keepalive_time=600
+        sudo apt-get update
+        sudo apt-get install -y firefox
+        wget https://github.com/mozilla/geckodriver/releases/latest/download/geckodriver-v0.34.0-linux64.tar.gz
+        tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
+        sudo mv geckodriver /usr/local/bin/
 
     - name: Run the webscraping script
       env:
