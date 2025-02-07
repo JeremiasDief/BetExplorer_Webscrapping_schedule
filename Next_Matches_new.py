@@ -212,7 +212,7 @@ try:
                 driver.get(f"https://www.betexplorer.com{match_link}")
 
                 # # Adicionar um tempo de espera para carregar a nova página
-                time.sleep(2)  # Esperar 5 segundos para carregar a nova página
+                time.sleep(5)  # Esperar 5 segundos para carregar a nova página
 
                 # Obter o código-fonte da página após o login
                 page_source_match = driver.page_source
@@ -436,7 +436,7 @@ finally:
                                     ["Over 2.5", "Under 2.5", "BTTS Sim", "BTTS Não", "Link"]]
     
     # Caminho para salvar o arquivo Excel no repositório privado
-    output_path = f"./private-arquivos/Matches2_{hoje}.xlsx"
+    output_path = f"./private-arquivos/Matches_{hoje}.xlsx"
 
     df_nextmatches.to_excel(output_path,
                             sheet_name="Jogos",

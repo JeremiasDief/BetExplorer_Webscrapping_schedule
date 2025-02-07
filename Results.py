@@ -35,11 +35,17 @@ chrome_options = [
     # "--ignore-certificate-errors",
     # "--disable-extensions",
     "--no-sandbox",
-    "--remote-debugging-port=9222"
+    "--remote-debugging-port=9222",
+    "--disable-blink-features=AutomationControlled",
+    "--disable-features=NetworkService"
     # "--disable-dev-shm-usage"
 ]
 for option in chrome_options:
     options.add_argument(option)
+
+options.add_argument(
+    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+)
 
 # Configurar o WebDriver usando webdriver-manager
 service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
@@ -178,7 +184,7 @@ try:
                 driver.get(f"https://www.betexplorer.com{match_link}")
                 
                 # Adicionar um tempo de espera para carregar a nova página
-                time.sleep(2)  # Esperar 5 segundos para carregar a nova página
+                time.sleep(5)  # Esperar 5 segundos para carregar a nova página
 
                 # Obter o código-fonte da página após o login
                 page_source_match = driver.page_source
