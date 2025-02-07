@@ -29,7 +29,7 @@ start_time = time.time()
 # Options
 options = Options()
 chrome_options = [
-    "--headless=new",
+    "--headless",
     # "--disable-gpu",
     # "--window-size=1920,1200",
     # "--ignore-certificate-errors",
