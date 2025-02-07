@@ -29,7 +29,7 @@ for data_passada in datas_passadas:
     # Options
     options = Options()
     chrome_options = [
-        "--headless=new",
+        # "--headless=new",
         # "--disable-gpu",
         # "--window-size=1920,1200",
         # "--ignore-certificate-errors",
@@ -251,100 +251,129 @@ for data_passada in datas_passadas:
                     # if len(site_match.find('p', class_='list-details__item__date headerTournamentDate').get_text(strip=True).split(' - ')) > 0:
                     #     match_hour = site_match.find('p', class_='list-details__item__date headerTournamentDate').get_text(strip=True).split(' - ')[1]
 
+                    status_url_game = False
+
                     # Clicar no elemento específico dentro da página do jogo
-                    WebDriverWait(driver, 60).until(
-                        EC.element_to_be_clickable((By.XPATH, '//*[@id="bettype_menu_best"]/li[2]'))
-                    )
+                    try:
+                        WebDriverWait(driver, 15).until(
+                            EC.element_to_be_clickable((By.XPATH, '//*[@id="bettype_menu_best"]/li[2]'))
+                        )
 
-                    # Usar JavaScript para clicar no elemento
-                    driver.execute_script("""
-                        var element = document.evaluate('//*[@id="bettype_menu_best"]/li[2]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-                        if (element) {
-                            element.click();
-                        }
-                    """)
-                    
-                    # Adicionar um tempo de espera para garantir que a ação seja concluída
-                    time.sleep(2)
+                        status_url_game = True
 
-                    # Obter o código-fonte da página após o login
-                    page_source_match = driver.page_source
+                    except Exception as e:
+                        print("Erro! Dando refresh na página e tentando novamente...")
 
-                    # Criar o objeto BeautifulSoup
-                    site_match = BeautifulSoup(page_source_match, 'html.parser')
+                        try:
+                            driver.refresh()
+                            time.sleep(5)  # Espera para garantir que a página recarregue
 
-                    table_odds_over = site_match.find('table', attrs={'data-handicap': '2.50'})
-                    if table_odds_over:
-                        rows = table_odds_over.find_all('tr', class_=['odd', 'even'])
+                            WebDriverWait(driver, 15).until(
+                                EC.element_to_be_clickable((By.XPATH, '//*[@id="bettype_menu_best"]/li[2]'))
+                            )
 
-                        for i, row in enumerate(rows):
-                            bookmaker = row.find('td', class_='h-text-left').get_text(strip=True)
-                            odds_cells = row.find_all('td', class_='table-main__detail-odds')
+                            status_url_game = True
 
-                            if "Pinnacle" in bookmaker:
-                                odd_over = odds_cells[0].get_text(strip=True)
-                                odd_under = odds_cells[1].get_text(strip=True)
-                                break
+                        except Exception as e:
+                            print("Botão não encontrado mesmo após o refresh. Seguindo para a próxima parte do código...")
 
-                            elif i == 0:
-                                odd_over = odds_cells[0].get_text(strip=True)
-                                odd_under = odds_cells[1].get_text(strip=True)
+                    if status_url_game:
+                        # Usar JavaScript para clicar no elemento
+                        driver.execute_script("""
+                            var element = document.evaluate('//*[@id="bettype_menu_best"]/li[2]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                            if (element) {
+                                element.click();
+                            }
+                        """)
+                        
+                        # Adicionar um tempo de espera para garantir que a ação seja concluída
+                        time.sleep(2)
 
-                            elif "Betfair" in bookmaker:
-                                odd_over = odds_cells[0].get_text(strip=True)
-                                odd_under = odds_cells[1].get_text(strip=True)
+                        # Obter o código-fonte da página após o login
+                        page_source_match = driver.page_source
 
-                            else:
-                                continue
+                        # Criar o objeto BeautifulSoup
+                        site_match = BeautifulSoup(page_source_match, 'html.parser')
+
+                        table_odds_over = site_match.find('table', attrs={'data-handicap': '2.50'})
+                        if table_odds_over:
+                            rows = table_odds_over.find_all('tr', class_=['odd', 'even'])
+
+                            for i, row in enumerate(rows):
+                                bookmaker = row.find('td', class_='h-text-left').get_text(strip=True)
+                                odds_cells = row.find_all('td', class_='table-main__detail-odds')
+
+                                if "Pinnacle" in bookmaker:
+                                    odd_over = odds_cells[0].get_text(strip=True)
+                                    odd_under = odds_cells[1].get_text(strip=True)
+                                    break
+
+                                elif i == 0:
+                                    odd_over = odds_cells[0].get_text(strip=True)
+                                    odd_under = odds_cells[1].get_text(strip=True)
+
+                                elif "Betfair" in bookmaker:
+                                    odd_over = odds_cells[0].get_text(strip=True)
+                                    odd_under = odds_cells[1].get_text(strip=True)
+
+                                else:
+                                    continue
+
+                        else:
+                            odd_over, odd_under = "", ""
 
                     else:
                         odd_over, odd_under = "", ""
 
-                    # Clicar no elemento específico dentro da página do jogo
-                    WebDriverWait(driver, 60).until(
-                        EC.element_to_be_clickable((By.XPATH, '//*[@id="bettype_menu_best"]/li[6]'))
-                    )
+                    if status_url_game:
+                        # Clicar no elemento específico dentro da página do jogo
+                        WebDriverWait(driver, 60).until(
+                            EC.element_to_be_clickable((By.XPATH, '//*[@id="bettype_menu_best"]/li[6]'))
+                        )
 
-                    # Usar JavaScript para clicar no elemento
-                    driver.execute_script("""
-                        var element = document.evaluate('//*[@id="bettype_menu_best"]/li[6]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-                        if (element) {
-                            element.click();
-                        }
-                    """)
-                    
-                    # Adicionar um tempo de espera para garantir que a ação seja concluída
-                    time.sleep(2)
+                        # Usar JavaScript para clicar no elemento
+                        driver.execute_script("""
+                            var element = document.evaluate('//*[@id="bettype_menu_best"]/li[6]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                            if (element) {
+                                element.click();
+                            }
+                        """)
+                        
+                        # Adicionar um tempo de espera para garantir que a ação seja concluída
+                        time.sleep(2)
 
-                    # Obter o código-fonte da página após o login
-                    page_source_match = driver.page_source
+                        # Obter o código-fonte da página após o login
+                        page_source_match = driver.page_source
 
-                    # Criar o objeto BeautifulSoup
-                    site_match = BeautifulSoup(page_source_match, 'html.parser')
+                        # Criar o objeto BeautifulSoup
+                        site_match = BeautifulSoup(page_source_match, 'html.parser')
 
-                    table_btts = site_match.find('table', attrs={'data-handicap': '0'})
-                    if table_btts:
-                        rows = table_btts.find_all('tr', class_=['odd', 'even'])
+                        table_btts = site_match.find('table', attrs={'data-handicap': '0'})
+                        if table_btts:
+                            rows = table_btts.find_all('tr', class_=['odd', 'even'])
 
-                        for i, row in enumerate(rows):
-                            bookmaker = row.find('td', class_='h-text-left').get_text(strip=True)
-                            odds_cells = row.find_all('td', class_='table-main__detail-odds')
+                            for i, row in enumerate(rows):
+                                bookmaker = row.find('td', class_='h-text-left').get_text(strip=True)
+                                odds_cells = row.find_all('td', class_='table-main__detail-odds')
 
-                            if "Pinnacle" in bookmaker:
-                                odd_btts_yes = odds_cells[0].get_text(strip=True)
-                                odd_btts_no = odds_cells[1].get_text(strip=True)
-                                break
+                                if "Pinnacle" in bookmaker:
+                                    odd_btts_yes = odds_cells[0].get_text(strip=True)
+                                    odd_btts_no = odds_cells[1].get_text(strip=True)
+                                    break
 
-                            elif i == 0:
-                                odd_btts_yes = odds_cells[0].get_text(strip=True)
-                                odd_btts_no = odds_cells[1].get_text(strip=True)
+                                elif i == 0:
+                                    odd_btts_yes = odds_cells[0].get_text(strip=True)
+                                    odd_btts_no = odds_cells[1].get_text(strip=True)
 
-                            elif "Betfair" in bookmaker:
-                                odd_btts_yes = odds_cells[0].get_text(strip=True)
-                                odd_btts_no = odds_cells[1].get_text(strip=True)
+                                elif "Betfair" in bookmaker:
+                                    odd_btts_yes = odds_cells[0].get_text(strip=True)
+                                    odd_btts_no = odds_cells[1].get_text(strip=True)
 
-                            else:
-                                continue
+                                else:
+                                    continue
+
+                        else:
+                            odd_btts_yes, odd_btts_no = "", ""
 
                     else:
                         odd_btts_yes, odd_btts_no = "", ""
