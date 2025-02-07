@@ -56,7 +56,10 @@ start_time = time.time()
 # driver = webdriver.Chrome(service=service, options=options)
 
 options = Options()
-options.headless = True  # Rodar em modo headless (sem interface gráfica)
+options.add_argument("-headless")  # Modo headless (correto)
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--marionette")  # Forçar uso do Marionette
 
 # Configurar o WebDriver para Firefox
 service = Service(GeckoDriverManager().install())

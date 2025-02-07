@@ -35,6 +35,7 @@ jobs:
         sudo apt-get install -y firefox
         python -m pip install --upgrade pip
         pip install webdriver-manager
+        sleep 5  # Aguarda 5 segundos para garantir que os serviços carreguem corretamente
 
     - name: Run the webscraping script
       env:
