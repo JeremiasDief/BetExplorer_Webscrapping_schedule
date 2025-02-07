@@ -15,13 +15,15 @@ import os
 
 # Para uso quando precisar rodar o código para mais de uma data (em casos de erros no run do schedule)
 # Lembrar de criar o laço for logo abaixo > for data_passada in datas_passadas: <
-datas_passadas = [(date(2025, 1, 31) + timedelta(days=i)) for i in range(6)]
+datas_passadas = [(date(2025, 2, 1) + timedelta(days=i)) for i in range(5)]
 
 for data_passada in datas_passadas:
     # Credenciais
-    login = os.getenv("BETEXPLORER_LOGIN")
-    password = os.getenv("BETEXPLORER_PASSWORD")
+    # login = os.getenv("BETEXPLORER_LOGIN")
+    # password = os.getenv("BETEXPLORER_PASSWORD")
     # Se for rodar na máquina local, usar o login e password
+    login = "jeremias_dief"
+    password = "BetExplorer2023"
 
     # Iniciar medição de tempo
     start_time = time.time()
@@ -29,7 +31,7 @@ for data_passada in datas_passadas:
     # Options
     options = Options()
     chrome_options = [
-        "--headless",
+        "--headless=new",
         # "--disable-gpu",
         # "--window-size=1920,1200",
         # "--ignore-certificate-errors",
@@ -42,8 +44,8 @@ for data_passada in datas_passadas:
         options.add_argument(option)
 
     # Configurar o WebDriver usando webdriver-manager
-    service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
-    # service = Service(ChromeDriverManager().install()) # Para uso do código na máquina local
+    # service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+    service = Service(ChromeDriverManager().install()) # Para uso do código na máquina local
     driver = webdriver.Chrome(service=service, options=options)
 
     # # Obter a data de ontem mais dois dias (de uso no código da automação)
@@ -69,7 +71,7 @@ for data_passada in datas_passadas:
 
         # Aceitar cookies se a mensagem aparecer
         try:
-            accept_cookies_button = WebDriverWait(driver, 10).until(
+            accept_cookies_button = WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable((By.XPATH, '//*[@id="onetrust-accept-btn-handler"]'))
             )
             accept_cookies_button.click()
@@ -79,7 +81,7 @@ for data_passada in datas_passadas:
 
         # Cancelar aviso site br se a mensagem aparecer
         try:
-            cancel_br_button = WebDriverWait(driver, 10).until(
+            cancel_br_button = WebDriverWait(driver, 20).until(
                 EC.element_to_be_clickable((By.XPATH, '//*[@id="js-window-language-redirect"]/div[2]/button[2]'))
             )
             cancel_br_button.click()
