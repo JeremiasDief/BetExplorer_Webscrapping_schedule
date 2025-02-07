@@ -59,7 +59,6 @@ options = Options()
 options.add_argument("-headless")  # Modo headless (correto)
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
-options.add_argument("--marionette")  # Forçar uso do Marionette
 
 # Configurar o WebDriver para Firefox
 service = Service(GeckoDriverManager().install())
