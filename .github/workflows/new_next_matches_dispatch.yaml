@@ -29,24 +29,18 @@ jobs:
         pip install -r requirements.txt
         pip install chromedriver-autoinstaller
 
-    - name: Install Firefox and Geckodriver
+    - name: Remove Chrome
+      run: sudo apt purge google-chrome-stable
+    - name: Remove default Chromium
+      run: sudo apt purge chromium-browser
+    - name: Install a new Chromium
       run: |
-        sudo apt-get update
-        sudo apt-get install -y firefox jq
-        GECKODRIVER_VERSION=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | jq -r .tag_name)
-        wget "https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz"
-        tar -xvzf geckodriver-*-linux64.tar.gz
-        sudo mv geckodriver /usr/local/bin/
-        rm geckodriver-*-linux64.tar.gz  # Remove o arquivo compactado após a extração
-        chmod +x /usr/local/bin/geckodriver
-        python -m pip install --upgrade pip
-        pip install webdriver-manager
-        sleep 5  # Aguarda alguns segundos para evitar falhas na inicialização
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo apt install -y ./google-chrome-stable_current_amd64.deb
 
-    - name: Check Firefox and Geckodriver
+    - name: Install ChromeDriver
       run: |
-        firefox --version
-        geckodriver --version
+        python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install()"
 
     - name: Run the webscraping script
       env:
@@ -54,10 +48,6 @@ jobs:
         BETEXPLORER_PASSWORD: ${{ secrets.BETEXPLORER_PASSWORD }}
       run: |
         python Next_Matches_new.py
-
-    - name: Start SSH for debugging (on failure)
-      if: failure()  # 🔴 Só inicia SSH se algum passo falhar
-      uses: mxschmitt/action-tmate@v3
 
     - name: Commit and push to private repo
       run: |-
