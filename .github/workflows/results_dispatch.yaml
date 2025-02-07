@@ -29,14 +29,18 @@ jobs:
         pip install -r requirements.txt
         pip install chromedriver-autoinstaller
 
-    - name: Install Latest ChromeDriver
+    - name: Remove Chrome
+      run: sudo apt purge google-chrome-stable
+    - name: Remove default Chromium
+      run: sudo apt purge chromium-browser
+    - name: Install a new Chromium
       run: |
-        LATEST_CHROMEDRIVER_VERSION=$(curl -sS https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json | jq -r '.versions[-1].version')
-        echo "Latest available ChromeDriver version: $LATEST_CHROMEDRIVER_VERSION"
-        wget "https://storage.googleapis.com/chrome-for-testing-public/$LATEST_CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip"
-        unzip chromedriver-linux64.zip
-        sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
-        chmod +x /usr/local/bin/chromedriver
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo apt install -y ./google-chrome-stable_current_amd64.deb
+
+    - name: Install ChromeDriver
+      run: |
+        python -c "import chromedriver_autoinstaller; chromedriver_autoinstaller.install()"
 
     - name: Run the webscraping script
       env:
