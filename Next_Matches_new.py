@@ -29,21 +29,23 @@ start_time = time.time()
 # Options
 options = Options()
 chrome_options = [
-    "--headless",
+    "--headless=new",
     # "--disable-gpu",
     # "--window-size=1920,1200",
-    # "--ignore-certificate-errors",
+    "--ignore-certificate-errors",
     # "--disable-extensions",
     "--no-sandbox",
-    "--remote-debugging-port=9222"
+    "--remote-debugging-port=9222",
+    "--disable-blink-features=AutomationControlled",
+    "--disable-features=NetworkService"
     # "--disable-dev-shm-usage"
 ]
 for option in chrome_options:
     options.add_argument(option)
 
-# options.add_argument(
-# "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
-# )
+options.add_argument(
+    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+)
 
 # Configurar o WebDriver usando webdriver-manager
 service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
@@ -434,7 +436,7 @@ finally:
                                     ["Over 2.5", "Under 2.5", "BTTS Sim", "BTTS Não", "Link"]]
     
     # Caminho para salvar o arquivo Excel no repositório privado
-    output_path = f"./private-arquivos/Matches_{hoje}.xlsx"
+    output_path = f"./private-arquivos/Matches2_{hoje}.xlsx"
 
     df_nextmatches.to_excel(output_path,
                             sheet_name="Jogos",
