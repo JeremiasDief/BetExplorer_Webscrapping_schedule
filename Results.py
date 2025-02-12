@@ -1,10 +1,13 @@
 from selenium import webdriver
+from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager, ChromeType
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.os_manager import ChromeType
 from bs4 import BeautifulSoup
 import time
 from datetime import date, timedelta, datetime
@@ -15,7 +18,7 @@ import os
 
 # Para uso quando precisar rodar o código para mais de uma data (em casos de erros no run do schedule)
 # Lembrar de criar o laço for logo abaixo > for data_passada in datas_passadas: <
-# datas_passadas = [(date(2025, 2, 1) + timedelta(days=i)) for i in range(6)]
+# datas_passadas = [(date(2025, 2, 10) + timedelta(days=i)) for i in range(4)]
 
 # for data_passada in datas_passadas:
 # Credenciais
@@ -29,27 +32,27 @@ start_time = time.time()
 # Options
 options = Options()
 chrome_options = [
-    "--headless=new",
-    # "--disable-gpu",
+    "--headless",
+    "--disable-gpu",
     # "--window-size=1920,1200",
     # "--ignore-certificate-errors",
-    # "--disable-extensions",
+    "--disable-extensions",
     "--no-sandbox",
     "--remote-debugging-port=9222",
-    "--disable-blink-features=AutomationControlled",
-    "--disable-features=NetworkService"
-    # "--disable-dev-shm-usage"
+    "--disable-dev-shm-usage",
+    "--start-maximized",
+    "--disk-cache-size=1",
+    "--media-cache-size=1",
+    "--incognito",
+    "--aggressive-cache-discard"
 ]
 for option in chrome_options:
     options.add_argument(option)
 
-options.add_argument(
-    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-)
-
 # Configurar o WebDriver usando webdriver-manager
-service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+# service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
 # service = Service(ChromeDriverManager().install()) # Para uso do código na máquina local
+service = Service('/usr/local/bin/chromedriver')
 driver = webdriver.Chrome(service=service, options=options)
 
 # # Obter a data de ontem mais dois dias (de uso no código da automação)
@@ -423,7 +426,7 @@ finally:
     df_results["BTTS N"] = pd.to_numeric(df_results["BTTS N"])
 
     # Caminho para salvar o arquivo Excel no repositório privado
-    output_path = f"./private-arquivos/Results_{ontem}.xlsx"
+    output_path = f"./private-arquivos/Results2_{ontem}.xlsx"
     
     df_results.to_excel(output_path,
                             sheet_name="Jogos",
