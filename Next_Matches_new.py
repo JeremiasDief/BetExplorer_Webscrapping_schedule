@@ -1,10 +1,13 @@
 from selenium import webdriver
+from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager, ChromeType
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.os_manager import ChromeType
 from bs4 import BeautifulSoup
 import time
 from datetime import date, timedelta, datetime
@@ -29,16 +32,19 @@ start_time = time.time()
 # Options
 options = Options()
 chrome_options = [
-    "--headless=new",
-    # "--disable-gpu",
+    "--headless",
+    "--disable-gpu",
     # "--window-size=1920,1200",
-    "--ignore-certificate-errors",
-    # "--disable-extensions",
+    # "--ignore-certificate-errors",
+    "--disable-extensions",
     "--no-sandbox",
     "--remote-debugging-port=9222",
-    "--disable-blink-features=AutomationControlled",
-    "--disable-features=NetworkService"
-    # "--disable-dev-shm-usage"
+    "--disable-dev-shm-usage",
+    "--start-maximized",
+    "--disk-cache-size=1",
+    "--media-cache-size=1",
+    "--incognito",
+    "--aggressive-cache-discard"
 ]
 for option in chrome_options:
     options.add_argument(option)
@@ -48,8 +54,9 @@ options.add_argument(
 )
 
 # Configurar o WebDriver usando webdriver-manager
-service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+# service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
 # service = Service(ChromeDriverManager().install()) # Para uso do código na máquina local
+service = Service('/usr/local/bin/chromedriver')
 driver = webdriver.Chrome(service=service, options=options)
 
 # Obter a data de hoje mais dois dias (de uso no código da automação)
